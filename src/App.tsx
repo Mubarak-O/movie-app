@@ -10,6 +10,8 @@ import { TVShows } from "./pages/tv-shows";
 import { TVShowDetails } from "./components/tvshowDetails";
 import { AuthContextProvider } from "./context/authContext";
 import { LogIn } from "./pages/login";
+import { ProtectedRoute } from "./components/protectedRoute";
+import { Account } from "./pages/account";
 
 function App() {
 	return (
@@ -21,6 +23,14 @@ function App() {
 					<Route path={"/"} element={<Home />} />
 					<Route path={"/signup"} element={<SignUp />} />
 					<Route path={"/login"} element={<LogIn />} />
+					<Route
+						path="/account"
+						element={
+							<ProtectedRoute>
+								<Account />
+							</ProtectedRoute>
+						}
+					/>
 					<Route path={"/movies"}>
 						<Route index element={<Movies />} />
 						<Route path={":movieId"} element={<MovieDetails />} />
