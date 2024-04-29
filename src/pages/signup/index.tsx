@@ -7,6 +7,7 @@ import { FormEvent, useState } from "react";
 export const SignUp = () => {
 	const [email, setEmail] = useState<string>("");
 	const [password, setPassword] = useState<string>("");
+	const [error, setError] = useState<string>("");
 	const { user, signUp } = UserAuth();
 	const navigate = useNavigate();
 
@@ -15,8 +16,11 @@ export const SignUp = () => {
 		try {
 			await signUp(email, password);
 			navigate("/");
-		} catch (error) {
-			console.log(error);
+		} catch (error: unknown) {
+			if (error instanceof Error) {
+				console.log(error);
+				setError(error.message);
+			}
 		}
 	};
 
@@ -38,6 +42,7 @@ export const SignUp = () => {
 							Log In
 						</Link>
 					</div>
+					{error && <p className="p-3 bg-red-400 my-2">{error}</p>}
 				</div>
 				<form
 					onSubmit={handleSubmit}
