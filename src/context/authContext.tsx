@@ -5,7 +5,7 @@ import {
 	useEffect,
 	useState,
 } from "react";
-import { auth } from "../firebase";
+import { auth, db } from "../firebase";
 import {
 	createUserWithEmailAndPassword,
 	signInWithEmailAndPassword,
@@ -14,6 +14,7 @@ import {
 	UserCredential,
 	User,
 } from "firebase/auth";
+import { setDoc, doc } from "firebase/firestore";
 
 type AuthContextType = {
 	user: User | null;
@@ -33,7 +34,16 @@ export function AuthContextProvider({ children }: { children: ReactNode }) {
 	const [user, setUser] = useState<User | null>(null);
 
 	function signUp(email: string, password: string) {
-		return createUserWithEmailAndPassword(auth, email, password);
+		const createdUser = createUserWithEmailAndPassword(
+			auth,
+			email,
+			password
+		);
+		setDoc(doc(db, "users", email), {
+			savedMedia: [],
+		});
+
+		return createdUser;
 	}
 
 	function logIn(email: string, password: string) {
