@@ -94,3 +94,10 @@ export type RequestOptions = {
 		Authorization: string;
 	};
 };
+
+export type savedMedia = {
+	id: string;
+	img: string;
+	title: string;
+	type: string;
+};

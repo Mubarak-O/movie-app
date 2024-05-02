@@ -1,36 +1,32 @@
-import { useState } from "react";
-import { Movie } from "../../types/types";
-import { FaRegHeart, FaHeart } from "react-icons/fa6";
+import { Link } from "react-router-dom";
+import { savedMedia } from "../../types/types";
+import { AiOutlineClose } from "react-icons/ai";
 
 interface RowItemProps {
-	movie: Movie;
+	media: savedMedia;
+	handleRemoveMedia: (id: string) => Promise<void>;
 }
 
-export const RowItem = ({ movie }: RowItemProps) => {
-	const [like, setLike] = useState(false);
+export const RowItem = ({ media, handleRemoveMedia }: RowItemProps) => {
 	return (
-		<div className="inline-block p-5" tabIndex={0}>
-			<img
-				className="drop-shadow-lg"
-				src={`https://image.tmdb.org/t/p/w185/${movie?.poster_path}`}
-				alt={movie?.title}
-			></img>
-			<div className="flex flex-row items-center p-1">
-				<p className="truncate max-w-[16ch] grow font-maven text-white font-semibold">
-					{movie.title}
-				</p>
-				<p>
-					{like ? (
-						<FaRegHeart
-							className="fill-white cursor-pointer"
-							size={20}
-						/>
-					) : (
-						<FaHeart
-							className="fill-white cursor-pointer"
-							size={20}
-						/>
-					)}
+		<div className="inline-block p-5 " tabIndex={0}>
+			<div className="relative group">
+				<AiOutlineClose
+					onClick={() => handleRemoveMedia(media.id)}
+					size={30}
+					className="fill-white absolute group-hover:z-10 right-1 top-1 cursor-pointer"
+				/>
+				<Link to={`../${media.type}/${media.id}`} className="">
+					<img
+						className="drop-shadow-lg group-hover:opacity-20 transition-opacity duration-300"
+						src={`https://image.tmdb.org/t/p/w185/${media?.img}`}
+						alt={media?.title}
+					/>
+				</Link>
+			</div>
+			<div className="text-center p-2">
+				<p className="truncate max-w-[16ch] grow font-maven text-white font-semibold ">
+					{media.title}
 				</p>
 			</div>
 		</div>
