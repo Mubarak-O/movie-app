@@ -41,6 +41,7 @@ export function AuthContextProvider({ children }: { children: ReactNode }) {
 		);
 		setDoc(doc(db, "users", email), {
 			savedMedia: [],
+			toWatchMedia: [],
 		});
 
 		return createdUser;

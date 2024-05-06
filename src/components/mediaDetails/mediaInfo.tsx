@@ -22,6 +22,10 @@ export const MediaInfo = ({ id, mediaType }: MediaInfoProps) => {
 		{} as DetailedMediaData
 	);
 
+	const [liked, setLiked] = useState<boolean>(false);
+	const [watchLater, setWatchLater] = useState<boolean>(false);
+	const { user } = UserAuth();
+
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
@@ -35,18 +39,13 @@ export const MediaInfo = ({ id, mediaType }: MediaInfoProps) => {
 		fetchData();
 	}, []);
 
-	const [liked, setLiked] = useState<boolean>(false);
-	const [watchLater, setWatchLater] = useState<boolean>(false);
-
-	const { user } = UserAuth();
-
 	const docId = doc(db, "users", `${user?.email}`);
 
-	const getUserDoc = async () => {
-		// TODO: searching for the user's already liked media
-		const userDoc = await getDoc(docId);
-		console.log(userDoc.data());
-	};
+	// const getUserDoc = async () => {
+	// 	// TODO: searching for the user's already liked media
+	// 	const userDoc = await getDoc(docId);
+	// 	console.log(userDoc.data());
+	// };
 
 	const likeMedia = async () => {
 		if (user?.email) {
@@ -62,22 +61,40 @@ export const MediaInfo = ({ id, mediaType }: MediaInfoProps) => {
 				}),
 			});
 		} else {
-			alert("Please log in to save a movie");
+			alert(
+				`Please log in to save a ${
+					isMovie(mediaData) ? "Movie" : "Tv Show"
+				}`
+			);
 		}
 	};
-
-	// const testDoc = collection(db, "users", `${user?.email}`);
-	// const saved = query(testDoc, where("id", "==", mediaData.id));
-	// console.log(saved);
 
 	const bookmarkMedia = async () => {
 		// TODO: Implement a similar feature to the above function
 		// 		 except I need to add in a new entry into the database
 		// 		 similar to the savedMedia list
+
+		if (user?.email) {
+			setWatchLater(!watchLater);
+			await updateDoc(docId, {
+				toWatchMedia: arrayUnion({
+					id: mediaData.id,
+					title: isMovie(mediaData)
+						? mediaData.title
+						: mediaData.original_name,
+					img: mediaData.poster_path,
+					type: isMovie(mediaData) ? "movies" : "tv-shows",
+				}),
+			});
+		} else {
+			alert(
+				`Please log in to bookmark a ${
+					isMovie(mediaData) ? "Movie" : "Tv Show"
+				}`
+			);
+		}
 	};
 
-	// console.log(mediaData);
-	console.log(liked);
 	const saved = false;
 
 	return (
@@ -111,19 +128,19 @@ export const MediaInfo = ({ id, mediaType }: MediaInfoProps) => {
 								/>
 							)}
 						</span>
-						{watchLater ? (
-							<FaBookmark
-								size={30}
-								className="cursor-pointer"
-								onClick={() => setWatchLater(false)}
-							/>
-						) : (
-							<FaRegBookmark
-								size={30}
-								className="cursor-pointer"
-								onClick={() => setWatchLater(true)}
-							/>
-						)}
+						<span onClick={bookmarkMedia}>
+							{watchLater ? (
+								<FaBookmark
+									size={30}
+									className="cursor-pointer"
+								/>
+							) : (
+								<FaRegBookmark
+									size={30}
+									className="cursor-pointer"
+								/>
+							)}
+						</span>
 					</div>
 					<p className="font-maven text-lg">{mediaData.overview}</p>
 				</div>
