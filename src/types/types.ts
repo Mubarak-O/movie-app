@@ -96,7 +96,7 @@ export type RequestOptions = {
 };
 
 export type dbMedia = {
-	id: string;
+	id: number;
 	img: string;
 	title: string;
 	type: string;

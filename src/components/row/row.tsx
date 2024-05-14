@@ -12,7 +12,7 @@ interface RowProps {
 export const Row = ({ title, media, userRefDoc, type }: RowProps) => {
 	const removeMedia = async (passedId: string) => {
 		try {
-			const result = media.filter((item) => item.id !== passedId);
+			const result = media.filter((item) => item.id !== +passedId);
 			if (type === "saved") {
 				await updateDoc(userRefDoc, {
 					savedMedia: result,
