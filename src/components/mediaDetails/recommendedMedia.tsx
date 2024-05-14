@@ -20,8 +20,6 @@ export const RecommendedMedia = ({
 		fetchData();
 	}, []);
 
-	console.log(recommendedMedia);
-
 	return (
 		recommendedMedia.length > 1 && (
 			<>

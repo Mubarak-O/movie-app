@@ -14,10 +14,12 @@ import {
 	UserCredential,
 	User,
 } from "firebase/auth";
-import { setDoc, doc } from "firebase/firestore";
+import { setDoc, doc, onSnapshot } from "firebase/firestore";
+import { dbMedia } from "../types/types";
 
 type AuthContextType = {
 	user: User | null;
+	userData: UserData;
 	signUp: (email: string, password: string) => Promise<UserCredential | void>;
 	logIn: (email: string, password: string) => Promise<UserCredential | void>;
 	logOut: () => Promise<void>;
@@ -25,13 +27,36 @@ type AuthContextType = {
 
 const AuthContext = createContext<AuthContextType>({
 	user: null,
+	userData: {} as UserData,
 	signUp: (_email: string, _password: string) => Promise.resolve(),
 	logIn: (_email: string, _password: string) => Promise.resolve(),
 	logOut: () => Promise.resolve(),
 });
 
+type UserData = {
+	savedMedia: number[];
+	toWatchMedia: number[];
+};
+
 export function AuthContextProvider({ children }: { children: ReactNode }) {
 	const [user, setUser] = useState<User | null>(null);
+	const [userData, setUserData] = useState<UserData>({} as UserData);
+
+	useEffect(() => {
+		onSnapshot(doc(db, "users", `${user?.email}`), (doc) => {
+			const userData = doc.data();
+			const savedMediaIds = userData?.savedMedia.map(
+				(item: dbMedia) => item.id
+			);
+			const toWatchMediaIds = userData?.toWatchMedia.map(
+				(item: dbMedia) => item.id
+			);
+			setUserData({
+				savedMedia: savedMediaIds,
+				toWatchMedia: toWatchMediaIds,
+			});
+		});
+	}, [user?.email]);
 
 	function signUp(email: string, password: string) {
 		const createdUser = createUserWithEmailAndPassword(
@@ -43,7 +68,6 @@ export function AuthContextProvider({ children }: { children: ReactNode }) {
 			savedMedia: [],
 			toWatchMedia: [],
 		});
-
 		return createdUser;
 	}
 
@@ -65,7 +89,7 @@ export function AuthContextProvider({ children }: { children: ReactNode }) {
 	});
 
 	return (
-		<AuthContext.Provider value={{ signUp, logIn, logOut, user }}>
+		<AuthContext.Provider value={{ signUp, logIn, logOut, user, userData }}>
 			{children}
 		</AuthContext.Provider>
 	);

@@ -23,7 +23,9 @@ export const Account = () => {
 
 	return (
 		<>
-			<h1>Account</h1>
+			<h1 className="p-2 ml-10 text-xl text-white font-maven">
+				Welcome: {user?.email}
+			</h1>
 			<Row
 				title="My Movies & TV Shows"
 				media={savedMedia}

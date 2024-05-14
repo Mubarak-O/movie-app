@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { DetailedMediaData } from "../../types/types";
+import { DetailedMediaData, dbMedia } from "../../types/types";
 import { getMediaDetails } from "../../api/requests";
 import { isMovie, getDirector, getCast } from "../../utils/utility";
 import {
@@ -24,7 +24,7 @@ export const MediaInfo = ({ id, mediaType }: MediaInfoProps) => {
 
 	const [liked, setLiked] = useState<boolean>(false);
 	const [watchLater, setWatchLater] = useState<boolean>(false);
-	const { user } = UserAuth();
+	const { user, userData } = UserAuth();
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -35,17 +35,29 @@ export const MediaInfo = ({ id, mediaType }: MediaInfoProps) => {
 				console.error(error);
 			}
 		};
-
 		fetchData();
 	}, []);
 
-	const docId = doc(db, "users", `${user?.email}`);
+	useEffect(() => {
+		const checkSaved = async () => {
+			if (userData?.savedMedia?.includes(+id)) {
+				console.log("Found match setting Liked to True");
+				setLiked(true);
+			}
+		};
 
-	// const getUserDoc = async () => {
-	// 	// TODO: searching for the user's already liked media
-	// 	const userDoc = await getDoc(docId);
-	// 	console.log(userDoc.data());
-	// };
+		const checkBookmarked = async () => {
+			if (userData?.toWatchMedia?.includes(+id)) {
+				console.log("Found match setting Bookmarked to True");
+				setWatchLater(true);
+			}
+		};
+
+		checkSaved();
+		checkBookmarked();
+	}, []);
+
+	const docId = doc(db, "users", `${user?.email}`);
 
 	const likeMedia = async () => {
 		if (user?.email) {
@@ -70,10 +82,6 @@ export const MediaInfo = ({ id, mediaType }: MediaInfoProps) => {
 	};
 
 	const bookmarkMedia = async () => {
-		// TODO: Implement a similar feature to the above function
-		// 		 except I need to add in a new entry into the database
-		// 		 similar to the savedMedia list
-
 		if (user?.email) {
 			setWatchLater(!watchLater);
 			await updateDoc(docId, {
@@ -95,7 +103,39 @@ export const MediaInfo = ({ id, mediaType }: MediaInfoProps) => {
 		}
 	};
 
-	const saved = false;
+	const removeLikedMedia = async () => {
+		if (user?.email && liked) {
+			setLiked(!liked);
+
+			try {
+				const docRef = await getDoc(docId);
+				const docData: dbMedia[] = docRef.data()?.savedMedia;
+				const result = docData.filter((item) => item.id !== +id);
+				await updateDoc(docId, {
+					savedMedia: result,
+				});
+			} catch (error) {
+				console.log(error);
+			}
+		}
+	};
+
+	const removeBookmarkMedia = async () => {
+		if (user?.email && watchLater) {
+			setWatchLater(!watchLater);
+
+			try {
+				const docRef = await getDoc(docId);
+				const docData: dbMedia[] = docRef.data()?.toWatchMedia;
+				const result = docData.filter((item) => item.id !== +id);
+				await updateDoc(docId, {
+					toWatchMedia: result,
+				});
+			} catch (error) {
+				console.log(error);
+			}
+		}
+	};
 
 	return (
 		<div className="bg-secondary-colour flex flex-row rounded-[35px] space-x-10">
@@ -118,26 +158,33 @@ export const MediaInfo = ({ id, mediaType }: MediaInfoProps) => {
 								? mediaData.original_title
 								: mediaData.original_name}
 						</h1>
-						<span onClick={likeMedia}>
-							{liked || saved ? (
-								<FaHeart size={30} className="cursor-pointer" />
+						<span>
+							{liked ? (
+								<FaHeart
+									size={30}
+									className="cursor-pointer"
+									onClick={removeLikedMedia}
+								/>
 							) : (
 								<FaRegHeart
 									size={30}
 									className="cursor-pointer"
+									onClick={likeMedia}
 								/>
 							)}
 						</span>
-						<span onClick={bookmarkMedia}>
+						<span>
 							{watchLater ? (
 								<FaBookmark
 									size={30}
 									className="cursor-pointer"
+									onClick={removeBookmarkMedia}
 								/>
 							) : (
 								<FaRegBookmark
 									size={30}
 									className="cursor-pointer"
+									onClick={bookmarkMedia}
 								/>
 							)}
 						</span>
