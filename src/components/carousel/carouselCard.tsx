@@ -1,6 +1,5 @@
 import { Movie } from "../../types/types";
 import { FaPlay } from "react-icons/fa6";
-import { FaRegBookmark } from "react-icons/fa6";
 import { getGenreNameById } from "../../utils/utility";
 import { FaRegClock } from "react-icons/fa6";
 import { TbCategory } from "react-icons/tb";
@@ -51,27 +50,13 @@ export const CarouselCard = ({ movie }: CarouselCardProps) => {
 				<p className="text-md line-clamp-4 font-maven">
 					{movie?.overview}
 				</p>
-				<div className="flex flex-row space-x-10 py-2">
+				<div className="py-2 mx-auto w-[50%]">
 					<Link to={`/movies/${movie.id}`}>
 						<div className="btn-primary">
-							<FaPlay size={20} />
-							<button
-								className="text-xl font-maven"
-								onClick={() => null}
-							>
-								Play Now
-							</button>
+							<FaPlay size={25} />
+							<span className="font-k2d text-xl">Watch Now</span>
 						</div>
 					</Link>
-					<div className="btn-primary">
-						<FaRegBookmark size={20} />
-						<button
-							className="text-xl font-maven"
-							onClick={() => null}
-						>
-							Watch Later
-						</button>
-					</div>
 				</div>
 			</div>
 		</div>

@@ -4,7 +4,7 @@
 
 @layer components {
 	.btn-primary {
-		@apply inline-flex items-center bg-accent-colour rounded-2xl space-x-2 p-2;
+		@apply flex flex-row items-center justify-center bg-accent-colour rounded-2xl space-x-2 p-2;
 	}
 	.bg-fade {
 		@apply backdrop-filter backdrop-blur-[2px] bg-gradient-to-b from-transparent to-black opacity-0 group-hover:visible group-hover:opacity-100 transition-opacity duration-500;
