@@ -31,7 +31,11 @@ This is a WIP Movie Web Application built using React, TypeScript, Vite and TheM
     -   A popular library for making HTTP requests, offering an intuitive API for handling asynchronous operations and managing HTTP responses.
 
 -   **[HeadlessUI](https://headlessui.com/)**
+
     -   A collection of accessible and customizable UI components for building modern web applications, emphasizing flexibility and keyboard navigation.
+
+-   **[Firebase](https://firebase.google.com/)**
+    -   Utilized for backend services including Firestore for database management and Authentication for user login.
 
 ## APIs Used
 
@@ -40,7 +44,6 @@ This is a WIP Movie Web Application built using React, TypeScript, Vite and TheM
 
 ## TODO:
 
--   ### User Authentication
+-   ### ~~User Authentication~~
+-   ### ~~Watchlist~~
 -   ### User Ratings
--   ### Watchlist
--   ### Personalised Media (Movie / TV Show) Recommendations
