@@ -3,11 +3,11 @@ import { FaRegEye } from "react-icons/fa6";
 import { Link, useNavigate } from "react-router-dom";
 import { UserAuth } from "../../context/authContext";
 import { FormEvent, useState } from "react";
+import toast from "react-hot-toast";
 
 export const SignUp = () => {
 	const [email, setEmail] = useState<string>("");
 	const [password, setPassword] = useState<string>("");
-	const [error, setError] = useState<string>("");
 	const { user, signUp } = UserAuth();
 	const navigate = useNavigate();
 
@@ -16,10 +16,11 @@ export const SignUp = () => {
 		try {
 			await signUp(email, password);
 			navigate("/");
+			toast.success("You have signed up");
 		} catch (error: unknown) {
 			if (error instanceof Error) {
 				console.log(error);
-				setError(error.message);
+				toast.error(`${error}`);
 			}
 		}
 	};
@@ -42,7 +43,6 @@ export const SignUp = () => {
 							Log In
 						</Link>
 					</div>
-					{error && <p className="p-3 bg-red-400 my-2">{error}</p>}
 				</div>
 				<form
 					onSubmit={handleSubmit}

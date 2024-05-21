@@ -11,6 +11,7 @@ import {
 import { UserAuth } from "../../context/authContext";
 import { arrayUnion, doc, updateDoc, getDoc } from "firebase/firestore";
 import { db } from "../../firebase";
+import toast from "react-hot-toast";
 
 interface MediaInfoProps {
 	id: string;
@@ -72,8 +73,13 @@ export const MediaInfo = ({ id, mediaType }: MediaInfoProps) => {
 					type: isMovie(mediaData) ? "movies" : "tv-shows",
 				}),
 			});
+			toast.success(
+				`Added ${
+					isMovie(mediaData) ? "Movie" : "Tv Show"
+				} to your favourites list`
+			);
 		} else {
-			alert(
+			toast.error(
 				`Please log in to save a ${
 					isMovie(mediaData) ? "Movie" : "Tv Show"
 				}`
@@ -94,8 +100,13 @@ export const MediaInfo = ({ id, mediaType }: MediaInfoProps) => {
 					type: isMovie(mediaData) ? "movies" : "tv-shows",
 				}),
 			});
+			toast.success(
+				`Added ${
+					isMovie(mediaData) ? "Movie" : "Tv Show"
+				} to your watch later list`
+			);
 		} else {
-			alert(
+			toast.error(
 				`Please log in to bookmark a ${
 					isMovie(mediaData) ? "Movie" : "Tv Show"
 				}`
@@ -106,7 +117,6 @@ export const MediaInfo = ({ id, mediaType }: MediaInfoProps) => {
 	const removeLikedMedia = async () => {
 		if (user?.email && liked) {
 			setLiked(!liked);
-
 			try {
 				const docRef = await getDoc(docId);
 				const docData: dbMedia[] = docRef.data()?.savedMedia;
@@ -114,6 +124,11 @@ export const MediaInfo = ({ id, mediaType }: MediaInfoProps) => {
 				await updateDoc(docId, {
 					savedMedia: result,
 				});
+				toast.success(
+					`Removed ${
+						isMovie(mediaData) ? "Movie" : "Tv Show"
+					} from your favourites list`
+				);
 			} catch (error) {
 				console.log(error);
 			}
@@ -123,7 +138,6 @@ export const MediaInfo = ({ id, mediaType }: MediaInfoProps) => {
 	const removeBookmarkMedia = async () => {
 		if (user?.email && watchLater) {
 			setWatchLater(!watchLater);
-
 			try {
 				const docRef = await getDoc(docId);
 				const docData: dbMedia[] = docRef.data()?.toWatchMedia;
@@ -131,6 +145,11 @@ export const MediaInfo = ({ id, mediaType }: MediaInfoProps) => {
 				await updateDoc(docId, {
 					toWatchMedia: result,
 				});
+				toast.success(
+					`Removed ${
+						isMovie(mediaData) ? "Movie" : "Tv Show"
+					} from your watch later list`
+				);
 			} catch (error) {
 				console.log(error);
 			}

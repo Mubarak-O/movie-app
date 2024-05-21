@@ -1,3 +1,4 @@
+import toast from "react-hot-toast";
 import { dbMedia } from "../../types/types";
 import { RowItem } from "./rowItem";
 import { DocumentData, DocumentReference, updateDoc } from "firebase/firestore";
@@ -17,10 +18,12 @@ export const Row = ({ title, media, userRefDoc, type }: RowProps) => {
 				await updateDoc(userRefDoc, {
 					savedMedia: result,
 				});
+				toast.success("Removed Item from your favourites list");
 			} else {
 				await updateDoc(userRefDoc, {
 					toWatchMedia: result,
 				});
+				toast.success("Removed Item from your to watch later list");
 			}
 		} catch (error) {
 			console.log(error);

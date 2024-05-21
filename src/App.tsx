@@ -12,11 +12,13 @@ import { AuthContextProvider } from "./context/authContext";
 import { LogIn } from "./pages/login";
 import { ProtectedRoute } from "./components/protectedRoute";
 import { Account } from "./pages/account";
+import { Toaster } from "react-hot-toast";
 
 function App() {
 	return (
 		<AuthContextProvider>
 			<BrowserRouter>
+				<Toaster position="top-center" />
 				<Navbar />
 				{/* <Searchbar /> */}
 				<Routes>
