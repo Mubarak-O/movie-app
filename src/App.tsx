@@ -18,7 +18,14 @@ function App() {
 	return (
 		<AuthContextProvider>
 			<BrowserRouter>
-				<Toaster position="top-center" />
+				<Toaster
+					position="top-center"
+					toastOptions={{
+						success: {
+							duration: 2500,
+						},
+					}}
+				/>
 				<Navbar />
 				{/* <Searchbar /> */}
 				<Routes>

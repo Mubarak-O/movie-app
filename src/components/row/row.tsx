@@ -13,17 +13,34 @@ interface RowProps {
 export const Row = ({ title, media, userRefDoc, type }: RowProps) => {
 	const removeMedia = async (passedId: string) => {
 		try {
+			const mediaToRemove = media.find((item) => item.id === +passedId);
 			const result = media.filter((item) => item.id !== +passedId);
 			if (type === "saved") {
 				await updateDoc(userRefDoc, {
 					savedMedia: result,
 				});
-				toast.success("Removed Item from your favourites list");
+				toast.success(
+					<p>
+						Removed <b>{mediaToRemove?.title}</b> from your
+						favourites list!
+					</p>,
+					{
+						icon: "🗑️",
+					}
+				);
 			} else {
 				await updateDoc(userRefDoc, {
 					toWatchMedia: result,
 				});
-				toast.success("Removed Item from your to watch later list");
+				toast.success(
+					<p>
+						Removed <b>{mediaToRemove?.title}</b> from your watch
+						later list!
+					</p>,
+					{
+						icon: "🗑️",
+					}
+				);
 			}
 		} catch (error) {
 			console.log(error);

@@ -22,6 +22,9 @@ export const MediaInfo = ({ id, mediaType }: MediaInfoProps) => {
 	const [mediaData, setMediaData] = useState<DetailedMediaData>(
 		{} as DetailedMediaData
 	);
+	const title = isMovie(mediaData)
+		? mediaData.title
+		: mediaData.original_name;
 
 	const [liked, setLiked] = useState<boolean>(false);
 	const [watchLater, setWatchLater] = useState<boolean>(false);
@@ -40,16 +43,14 @@ export const MediaInfo = ({ id, mediaType }: MediaInfoProps) => {
 	}, []);
 
 	useEffect(() => {
-		const checkSaved = async () => {
+		const checkSaved = () => {
 			if (userData?.savedMedia?.includes(+id)) {
-				console.log("Found match setting Liked to True");
 				setLiked(true);
 			}
 		};
 
-		const checkBookmarked = async () => {
+		const checkBookmarked = () => {
 			if (userData?.toWatchMedia?.includes(+id)) {
-				console.log("Found match setting Bookmarked to True");
 				setWatchLater(true);
 			}
 		};
@@ -66,17 +67,18 @@ export const MediaInfo = ({ id, mediaType }: MediaInfoProps) => {
 			await updateDoc(docId, {
 				savedMedia: arrayUnion({
 					id: mediaData.id,
-					title: isMovie(mediaData)
-						? mediaData.title
-						: mediaData.original_name,
+					title: title,
 					img: mediaData.poster_path,
 					type: isMovie(mediaData) ? "movies" : "tv-shows",
 				}),
 			});
 			toast.success(
-				`Added ${
-					isMovie(mediaData) ? "Movie" : "Tv Show"
-				} to your favourites list`
+				<p>
+					Added <b>{title}</b> to your <i>favourites</i> list!
+				</p>,
+				{
+					icon: "❤️",
+				}
 			);
 		} else {
 			toast.error(
@@ -93,17 +95,18 @@ export const MediaInfo = ({ id, mediaType }: MediaInfoProps) => {
 			await updateDoc(docId, {
 				toWatchMedia: arrayUnion({
 					id: mediaData.id,
-					title: isMovie(mediaData)
-						? mediaData.title
-						: mediaData.original_name,
+					title: title,
 					img: mediaData.poster_path,
 					type: isMovie(mediaData) ? "movies" : "tv-shows",
 				}),
 			});
 			toast.success(
-				`Added ${
-					isMovie(mediaData) ? "Movie" : "Tv Show"
-				} to your watch later list`
+				<p>
+					Added <b>{title}</b> to your <i>watch later</i> list!
+				</p>,
+				{
+					icon: "📌",
+				}
 			);
 		} else {
 			toast.error(
@@ -125,9 +128,12 @@ export const MediaInfo = ({ id, mediaType }: MediaInfoProps) => {
 					savedMedia: result,
 				});
 				toast.success(
-					`Removed ${
-						isMovie(mediaData) ? "Movie" : "Tv Show"
-					} from your favourites list`
+					<p>
+						Removed <b>{title}</b> from your <i>favourites</i> list!
+					</p>,
+					{
+						icon: "🗑️",
+					}
 				);
 			} catch (error) {
 				console.log(error);
@@ -146,9 +152,13 @@ export const MediaInfo = ({ id, mediaType }: MediaInfoProps) => {
 					toWatchMedia: result,
 				});
 				toast.success(
-					`Removed ${
-						isMovie(mediaData) ? "Movie" : "Tv Show"
-					} from your watch later list`
+					<p>
+						Removed <b>{title}</b> from your <i>watch later</i>
+						list!
+					</p>,
+					{
+						icon: "🗑️",
+					}
 				);
 			} catch (error) {
 				console.log(error);
@@ -162,20 +172,14 @@ export const MediaInfo = ({ id, mediaType }: MediaInfoProps) => {
 				<img
 					className="h-full rounded-l-[35px]"
 					src={`https://image.tmdb.org/t/p/w300/${mediaData.poster_path}`}
-					alt={
-						isMovie(mediaData)
-							? mediaData.title
-							: mediaData.original_name
-					}
+					alt={title}
 				></img>
 			</div>
 			<div className="w-[70%] p-2 text-white space-y-10">
 				<div className="flex flex-col space-y-4 pt-2">
 					<div className="flex flex-row mr-20 items-center">
 						<h1 className="text-3xl font-k2d capitalize grow">
-							{isMovie(mediaData)
-								? mediaData.original_title
-								: mediaData.original_name}
+							{title}
 						</h1>
 						<span>
 							{liked ? (
