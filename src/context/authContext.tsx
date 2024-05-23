@@ -16,6 +16,9 @@ import {
 } from "firebase/auth";
 import { setDoc, doc, onSnapshot } from "firebase/firestore";
 import { dbMedia } from "../types/types";
+import { generateToasterMessage } from "../utils/errorHandler";
+import { FirebaseError } from "firebase/app";
+import toast from "react-hot-toast";
 
 type AuthContextType = {
 	user: User | null;
@@ -58,24 +61,48 @@ export function AuthContextProvider({ children }: { children: ReactNode }) {
 		});
 	}, [user?.email]);
 
-	function signUp(email: string, password: string) {
-		const createdUser = createUserWithEmailAndPassword(
-			auth,
-			email,
-			password
-		);
-		setDoc(doc(db, "users", email), {
-			savedMedia: [],
-			toWatchMedia: [],
-		});
+	async function signUp(email: string, password: string) {
+		let createdUser;
+		try {
+			createdUser = await createUserWithEmailAndPassword(
+				auth,
+				email,
+				password
+			);
+			await setDoc(doc(db, "users", email), {
+				savedMedia: [],
+				toWatchMedia: [],
+			});
+			toast.success("You have signed up successfully!");
+		} catch (error) {
+			if (error instanceof FirebaseError) {
+				generateToasterMessage(error);
+			}
+			return;
+		}
 		return createdUser;
 	}
 
-	function logIn(email: string, password: string) {
-		return signInWithEmailAndPassword(auth, email, password);
+	async function logIn(email: string, password: string) {
+		let signInUser;
+		try {
+			signInUser = await signInWithEmailAndPassword(
+				auth,
+				email,
+				password
+			);
+			toast.success("You have successfully logged in!");
+		} catch (error) {
+			if (error instanceof FirebaseError) {
+				generateToasterMessage(error);
+			}
+			return;
+		}
+		return signInUser;
 	}
 
 	function logOut() {
+		toast.success("You have logged out");
 		return signOut(auth);
 	}
 

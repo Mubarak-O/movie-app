@@ -1,22 +1,20 @@
 import { Link, useNavigate } from "react-router-dom";
 import { RiMovie2Line } from "react-icons/ri";
-// import { FaUser } from "react-icons/fa6";
 import { UserAuth } from "../context/authContext";
-import toast from "react-hot-toast";
+import { useEffect } from "react";
 
 export const Navbar = () => {
 	const { user, logOut } = UserAuth();
 	const navigate = useNavigate();
-	// console.log(user);
+
+	useEffect(() => {}, [user?.email]);
 
 	const handleLogout = async () => {
 		try {
 			await logOut();
 			navigate("/");
-			toast.success("You have logged out");
 		} catch (error) {
 			console.log(error);
-			toast.error(`Error occured attempting to log out`);
 		}
 	};
 

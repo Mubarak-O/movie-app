@@ -3,25 +3,18 @@ import { FaRegEye } from "react-icons/fa6";
 import { Link, useNavigate } from "react-router-dom";
 import { UserAuth } from "../../context/authContext";
 import { FormEvent, useState } from "react";
-import toast from "react-hot-toast";
 
 export const LogIn = () => {
 	const [email, setEmail] = useState<string>("");
 	const [password, setPassword] = useState<string>("");
-	const { user, logIn } = UserAuth();
+	const { logIn } = UserAuth();
 	const navigate = useNavigate();
 
 	const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		try {
-			await logIn(email, password);
+		const userCredential = await logIn(email, password);
+		if (userCredential) {
 			navigate("/");
-			toast.success("You have logged in");
-		} catch (error: unknown) {
-			if (error instanceof Error) {
-				console.log(error);
-				toast.error(`${error}`);
-			}
 		}
 	};
 
@@ -68,7 +61,7 @@ export const LogIn = () => {
 						/>
 						<FaRegEye size={30} className="fill-slate-300" />
 					</div>
-					<button className="bg-accent-colour p-3 rounded-xl text-xl font-semibold">
+					<button className="bg-accent-colour p-3 rounded-xl text-xl font-semibold hover:bg-accent-colour/65">
 						Log In
 					</button>
 				</form>
