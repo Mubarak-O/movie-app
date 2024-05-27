@@ -46,19 +46,21 @@ export function AuthContextProvider({ children }: { children: ReactNode }) {
 	const [userData, setUserData] = useState<UserData>({} as UserData);
 
 	useEffect(() => {
-		onSnapshot(doc(db, "users", `${user?.email}`), (doc) => {
-			const userData = doc.data();
-			const savedMediaIds = userData?.savedMedia.map(
-				(item: dbMedia) => item.id
-			);
-			const toWatchMediaIds = userData?.toWatchMedia.map(
-				(item: dbMedia) => item.id
-			);
-			setUserData({
-				savedMedia: savedMediaIds,
-				toWatchMedia: toWatchMediaIds,
+		if (user?.email) {
+			onSnapshot(doc(db, "users", `${user?.email}`), (doc) => {
+				const userData = doc.data();
+				const savedMediaIds = userData?.savedMedia.map(
+					(item: dbMedia) => item.id
+				);
+				const toWatchMediaIds = userData?.toWatchMedia.map(
+					(item: dbMedia) => item.id
+				);
+				setUserData({
+					savedMedia: savedMediaIds,
+					toWatchMedia: toWatchMediaIds,
+				});
 			});
-		});
+		}
 	}, [user?.email]);
 
 	async function signUp(email: string, password: string) {
