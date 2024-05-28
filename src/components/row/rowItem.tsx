@@ -4,7 +4,7 @@ import { AiOutlineClose } from "react-icons/ai";
 
 interface RowItemProps {
 	media: dbMedia;
-	handleRemoveMedia: (id: string) => Promise<void>;
+	handleRemoveMedia: (id: number) => Promise<void>;
 }
 
 export const RowItem = ({ media, handleRemoveMedia }: RowItemProps) => {
