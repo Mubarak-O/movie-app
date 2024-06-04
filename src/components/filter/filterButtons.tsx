@@ -3,14 +3,14 @@ import { GenreButton } from "./genreButton";
 import { SortButton } from "./sortButton";
 import { YearButton } from "./yearButtons";
 import { genresData } from "../../utils/utility";
+import { RefObject } from "react";
 
 interface FilterButtonsProps {
 	onGenreSelect: (selected: string) => void;
 	onYearSelect: (selected: string) => void;
 	onSortingSelect: (selectedOption: string) => void;
 	onFilterEnter: () => void;
-	onInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-	inputValue: string;
+	inputValueRef: RefObject<HTMLInputElement>;
 }
 
 export const FilterButtons = ({
@@ -18,15 +18,13 @@ export const FilterButtons = ({
 	onSortingSelect,
 	onYearSelect,
 	onFilterEnter,
-	onInputChange,
-	inputValue,
+	inputValueRef,
 }: FilterButtonsProps) => {
 	return (
 		<div className=" flex flex-row w-[80%] justify-between mx-auto text-white text-xl font-k2d">
 			<input
 				type="text"
-				value={inputValue}
-				onChange={onInputChange}
+				ref={inputValueRef}
 				placeholder="Search..."
 				className="search-box"
 			></input>

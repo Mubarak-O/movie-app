@@ -1,19 +1,15 @@
-import { useEffect, useState } from "react";
-import { MediaData } from "../../types/types";
-import {
-	createFilteredMediaData,
-	createSearchMediaData,
-} from "../../api/requests";
+import { useRef, useState } from "react";
 import { FilterButtons } from "../filter/filterButtons";
 import { MediaCards } from "./mediaCards";
 import { Pagination } from "./pagination";
+import { useFilteredMedia, useSearchedMedia } from "../../api/hooks";
 
 interface MediaProps {
 	fetchUrl: string;
 	mediaType: "movie" | "tv";
 }
 export const Media = ({ fetchUrl, mediaType }: MediaProps) => {
-	const [mediaData, setMediaData] = useState<MediaData[]>([]);
+	// const [mediaData, setMediaData] = useState<MediaData[]>([]);
 	const [currentPage, setCurrentPage] = useState<number>(1);
 	// Having cardsPerPage be a state variable might not be needed
 	// The only use case I see for it being one is if I wanted to set a different value
@@ -21,23 +17,25 @@ export const Media = ({ fetchUrl, mediaType }: MediaProps) => {
 	// Otherwise I think just having it as a const variable should be fine
 	const [cardsPerPage, _] = useState<number>(10);
 	const [selectedGenre, setSelectedGenre] = useState<string | undefined>(); // comma seperated string e.g: '1,25,3'
-	const [selectedYear, setselectedYear] = useState<string[] | undefined>();
 	const [selectedSorting, setSelectedSorting] =
 		useState<string>("popularity.desc");
-	const [inputValue, setInputValue] = useState<string>("");
+	const [selectedYear, setselectedYear] = useState<string[] | undefined>();
+	const inputValueRef = useRef<HTMLInputElement>(null);
+	const [searchQuery, setSearchQuery] = useState<string>("");
 
-	useEffect(() => {
-		const fetchData = async () => {
-			try {
-				const newData = await createFilteredMediaData(fetchUrl);
-				setMediaData(newData);
-			} catch (error) {
-				console.error(error);
-			}
-		};
+	const { data: filteredMediaData = [] } = useFilteredMedia(
+		fetchUrl,
+		selectedGenre,
+		selectedSorting,
+		selectedYear
+	);
 
-		fetchData();
-	}, []);
+	const { data: searchMediaData = [] } = useSearchedMedia(
+		searchQuery,
+		mediaType
+	);
+
+	const mediaData = searchQuery ? searchMediaData : filteredMediaData;
 
 	const handleSelectGenres = (selectedGenres: string) => {
 		setSelectedGenre(selectedGenres);
@@ -60,32 +58,21 @@ export const Media = ({ fetchUrl, mediaType }: MediaProps) => {
 		}
 	};
 
-	const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		setInputValue(event.target.value);
-	};
-
-	async function handleDisplayMediaData(): Promise<MediaData[]> {
-		let media = [] as MediaData[];
-		if (inputValue.trim() === "") {
-			media = await createFilteredMediaData(
-				fetchUrl,
-				selectedGenre,
-				selectedSorting,
-				selectedYear
-			);
-			setMediaData(media);
-		} else {
-			media = await createSearchMediaData(inputValue, mediaType);
-			setMediaData(media);
+	function handleDisplayMediaData(): void {
+		const input = inputValueRef.current?.value.trim();
+		if (input) {
+			setSearchQuery(input);
+			setSelectedGenre(undefined);
+			setSelectedSorting("popularity.desc");
+			setselectedYear(undefined);
 		}
-		return media;
 	}
 
 	const lastCardIndex = currentPage * cardsPerPage;
 	const firstCardIndex = lastCardIndex - cardsPerPage;
 	const currentCards = mediaData?.slice(firstCardIndex, lastCardIndex);
 
-	console.log(mediaData);
+	// console.log(mediaData);
 
 	return (
 		<>
@@ -97,8 +84,7 @@ export const Media = ({ fetchUrl, mediaType }: MediaProps) => {
 				onYearSelect={handleSelectedYears}
 				onSortingSelect={handleSelectSorting}
 				onFilterEnter={handleDisplayMediaData}
-				onInputChange={handleInputChange}
-				inputValue={inputValue}
+				inputValueRef={inputValueRef}
 			/>
 			<MediaCards mediaData={currentCards} />
 			<Pagination
