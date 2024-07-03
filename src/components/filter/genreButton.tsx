@@ -1,20 +1,19 @@
 import { Fragment, useState } from "react";
 import { Listbox, Transition } from "@headlessui/react";
 import { getGenreNameById } from "../../utils/utility";
-import { GenresData } from "../../types/types";
+import { genresData } from "../../utils/utility";
 
 interface GenreButtonProps {
-	genres: GenresData;
-	onGenreSelect: (selected: string) => void;
+	onGenreSelect: (selected: number[]) => void;
 }
 
-export const GenreButton = ({ genres, onGenreSelect }: GenreButtonProps) => {
+export const GenreButton = ({ onGenreSelect }: GenreButtonProps) => {
 	const [selectedGenres, setSelectedGenres] = useState<number[]>([]);
 
 	const handleGenreSelection = (selected: number[]) => {
 		console.log(selected);
 		setSelectedGenres(selected);
-		onGenreSelect(selected.join(","));
+		onGenreSelect(selected);
 	};
 
 	return (
@@ -38,7 +37,7 @@ export const GenreButton = ({ genres, onGenreSelect }: GenreButtonProps) => {
 								static
 								className="absolute z-10 top-[15%] right-[45%] grid grid-cols-4 gap-2 mt-2 p-2 bg-slate-700 rounded-md shadow-lg"
 							>
-								{genres.genres.map((genre) => (
+								{genresData.genres.map((genre) => (
 									<Listbox.Option
 										key={genre.id}
 										value={genre.id}

@@ -7,7 +7,9 @@ interface SortButtonProps {
 }
 
 export const SortButton = ({ onSortingSelect }: SortButtonProps) => {
-	const [selectedOption, setSelectedOption] = useState<string | null>("");
+	const [selectedOption, setSelectedOption] = useState<string>(
+		sortOptions[0].id
+	);
 
 	const handleSelectedOption = (selectedOption: string) => {
 		setSelectedOption(selectedOption);
