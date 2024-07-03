@@ -1,6 +1,6 @@
 import axios from "axios";
 import { DetailedMediaData, MediaData, RequestOptions } from "../types/types";
-import { filterNullPosterPath, sortDataByPopularity } from "../utils/utility";
+import { filterIrregularData, sortDataByPopularity } from "../utils/utility";
 
 const key = import.meta.env.VITE_MOVIEDB_API_KEY;
 const token = import.meta.env.VITE_MOVIEDB_ACCESS_TOKEN;
@@ -35,12 +35,8 @@ async function accumulateMediaData(
 
 			const response = await axios.request(options);
 			const mediaData: MediaData[] = response.data.results;
-			const filteredMediaData = filterNullPosterPath(mediaData);
 
-			accumulatedMediaData = [
-				...accumulatedMediaData,
-				...filteredMediaData,
-			];
+			accumulatedMediaData = [...accumulatedMediaData, ...mediaData];
 		} catch (error) {
 			console.error("Error fetching data: ", error);
 			break;
@@ -50,21 +46,19 @@ async function accumulateMediaData(
 	return accumulatedMediaData;
 }
 
-export async function createFilteredMediaData(
-	fetchUrl: string,
-	selectedGenre?: string,
-	selectedSorting?: string,
-	selectedYear?: string[]
-): Promise<MediaData[]> {
+export async function initMediaData(
+	mediaType: "movie" | "tv"
+): Promise<MediaData[] | []> {
 	const options: RequestOptions = {
 		method: "GET",
-		url: fetchUrl,
+		url: `https://api.themoviedb.org/3/discover/${mediaType}`,
 		params: {
 			include_adult: "false",
-			include_video: "false",
+			...(mediaType == "movie" && { include_video: "false" }),
+			...(mediaType == "tv" && { include_null_first_air_dates: "false" }),
 			language: "en-US",
 			page: "1",
-			sort_by: "popularity_desc",
+			sort_by: "popularity.desc",
 		},
 		headers: {
 			accept: "application/json",
@@ -72,25 +66,14 @@ export async function createFilteredMediaData(
 		},
 	};
 
-	if (selectedGenre) {
-		options.params["with_genres"] = selectedGenre;
-	}
-
-	if (selectedSorting) {
-		options.params["sort_by"] = selectedSorting;
-	}
-
-	if (selectedYear) {
-		options.params["primary_release_date.gte"] = selectedYear[0];
-		options.params["primary_release_date.lte"] = selectedYear[1];
-	}
-
-	const allMediaData = await accumulateMediaData(options);
+	var allMediaData: MediaData[] | [];
+	allMediaData = await accumulateMediaData(options);
+	allMediaData = filterIrregularData(allMediaData);
 
 	return allMediaData;
 }
 
-export async function createSearchMediaData(
+export async function queryMediaData(
 	query: string,
 	mediaType: "movie" | "tv"
 ): Promise<MediaData[]> {
