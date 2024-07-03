@@ -101,3 +101,10 @@ export type dbMedia = {
 	title: string;
 	type: string;
 };
+
+export type DataFilters = {
+	searchQuery: string;
+	selectedGenre?: number[];
+	selectedYear?: string[];
+	selectedSorting?: string;
+};
