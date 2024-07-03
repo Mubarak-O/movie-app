@@ -119,6 +119,11 @@ type SortOptions = {
 };
 
 export const sortOptions: SortOptions[] = [
+	// First Item will always be default sorting option
+	{
+		name: "Trending",
+		id: "trending",
+	},
 	{
 		name: "Popularity",
 		id: "popularity.desc",
@@ -126,18 +131,6 @@ export const sortOptions: SortOptions[] = [
 	{
 		name: "Title A-Z",
 		id: "title.asc",
-	},
-	{
-		name: "Title Z-A",
-		id: "title.desc",
-	},
-	{
-		name: "Release Date",
-		id: "primary_release_date.desc",
-	},
-	{
-		name: "Scores",
-		id: "vote_average.desc",
 	},
 ];
 
@@ -218,8 +211,38 @@ export function getYearNameById(id: string): string | undefined {
 	return year ? year.year : undefined;
 }
 
-export function filterNullPosterPath(mediaData: MediaData[]): MediaData[] {
+function filterNullPosterPath(mediaData: MediaData[]): MediaData[] {
 	return mediaData.filter((item) => item.poster_path !== null);
+}
+
+function filterUnreleasedMedia(mediaData: MediaData[]): MediaData[] {
+	const currentDate = new Date();
+	return mediaData.filter((item) => {
+		const mediaDate = new Date(
+			isMovie(item) ? item.release_date : item.first_air_date
+		);
+		return mediaDate < currentDate;
+	});
+}
+
+function filterDuplicateData(mediaData: MediaData[]): MediaData[] {
+	const uniqueIds = new Set<number>();
+	const uniqueData = mediaData.filter((item) => {
+		if (!uniqueIds.has(item.id)) {
+			uniqueIds.add(item.id);
+			return true;
+		}
+		return false;
+	});
+	return uniqueData;
+}
+
+export function filterIrregularData(mediaData: MediaData[]): MediaData[] {
+	var filteredData: MediaData[];
+	filteredData = filterDuplicateData(
+		filterUnreleasedMedia(filterNullPosterPath(mediaData))
+	);
+	return filteredData;
 }
 
 export function sortDataByPopularity(mediaData: MediaData[]): MediaData[] {
