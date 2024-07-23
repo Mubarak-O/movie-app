@@ -14,11 +14,11 @@ This is a WIP Movie Web Application built using React, TypeScript, Vite and TheM
 
     -   A utility-first CSS framework. Tailwind CSS is used for styling and creating a responsive design.
 
--   **[react-icons](https://react-icons.github.io/react-icons/)**
+-   **[React Icons](https://react-icons.github.io/react-icons/)**
 
     -   A collection of popular icons as React components. Used to incorporate a multitude of scalable and customisable icons in the application.
 
--   **[react-router-dom](https://reactrouter.com/en/main)**
+-   **[React Router](https://reactrouter.com/en/main)**
 
     -   A rouiting library for React that enables declarative navigation and rendering of components based on URLs.
 
@@ -35,7 +35,16 @@ This is a WIP Movie Web Application built using React, TypeScript, Vite and TheM
     -   A collection of accessible and customizable UI components for building modern web applications, emphasizing flexibility and keyboard navigation.
 
 -   **[Firebase](https://firebase.google.com/)**
+
     -   Utilized for backend services including Firestore for database management and Authentication for user login.
+
+-   **[React Hot Toast](https://react-hot-toast.com/)**
+
+    -   A lightweight, customizable notification library for React applications, offering easy-to-use toast messages with smooth animations and flexible positioning options.
+
+-   **[TanStack Query](https://tanstack.com/query/latest)**
+
+    -   A powerful data synchronization library for managing, caching and optimizing data fetched via API requests.
 
 ## APIs Used
 
