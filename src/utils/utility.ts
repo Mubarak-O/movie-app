@@ -237,10 +237,24 @@ function filterDuplicateData(mediaData: MediaData[]): MediaData[] {
 	return uniqueData;
 }
 
+function filterLowQualityData(mediaData: MediaData[]): MediaData[] {
+	const voteThreshold: number = 50;
+	return mediaData.filter((media) => {
+		return media.vote_count > voteThreshold; // Filter out the low quality media options
+	});
+}
+
 export function filterIrregularData(mediaData: MediaData[]): MediaData[] {
-	var filteredData: MediaData[];
-	filteredData = filterDuplicateData(
-		filterUnreleasedMedia(filterNullPosterPath(mediaData))
+	const filters = [
+		filterNullPosterPath,
+		filterUnreleasedMedia,
+		filterDuplicateData,
+		filterLowQualityData,
+	];
+
+	const filteredData: MediaData[] = filters.reduce(
+		(data, filter) => filter(data),
+		mediaData
 	);
 	return filteredData;
 }

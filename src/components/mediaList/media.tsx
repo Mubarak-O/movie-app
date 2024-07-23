@@ -10,7 +10,6 @@ interface MediaProps {
 	mediaType: "movie" | "tv";
 }
 export const Media = ({ mediaType }: MediaProps) => {
-	// const [mediaData, setMediaData] = useState<MediaData[]>([]);
 	const [currentPage, setCurrentPage] = useState<number>(1);
 	// Having cardsPerPage be a state variable might not be needed
 	// The only use case I see for it being one is if I wanted to set a different value
@@ -39,7 +38,7 @@ export const Media = ({ mediaType }: MediaProps) => {
 			})
 			.filter((media) => {
 				if (filters.selectedGenre && filters.selectedGenre.length > 0) {
-					filters.selectedGenre.every((genre) =>
+					return filters.selectedGenre.every((genre) =>
 						media.genre_ids.includes(genre)
 					);
 				}
