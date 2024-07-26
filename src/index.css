@@ -3,6 +3,15 @@
 @tailwind utilities;
 
 @layer components {
+	:root {
+		@apply bg-primary-colour min-h-screen;
+	}
+	.navbar {
+		@apply flex space-x-10 h-16 items-center p-16 text-2xl text-white font-poppins;
+	}
+	.active {
+		@apply underline underline-offset-8;
+	}
 	.btn-primary {
 		@apply flex flex-row items-center justify-center bg-accent-colour rounded-2xl space-x-2 p-2;
 	}
@@ -10,19 +19,22 @@
 		@apply backdrop-filter backdrop-blur-[2px] bg-gradient-to-b from-transparent to-black opacity-0 group-hover:visible group-hover:opacity-100 transition-opacity duration-500;
 	}
 	.filter-button {
-		@apply bg-slate-700 rounded-lg px-6 py-2 flex flex-row items-center space-x-4 focus:bg-accent-colour/35 ease-in-out duration-300;
+		@apply bg-[#201d1d] rounded-lg px-6 py-2 flex flex-row items-center space-x-4 focus:bg-accent-colour/35 ease-in-out duration-300;
 	}
 	.search-box {
-		@apply bg-slate-700 rounded-lg px-8 py-2;
+		@apply bg-[#201d1d] rounded-lg px-8 py-2;
 	}
 	.media-card-poster {
-		@apply rounded-lg bg-white;
+		@apply rounded-2xl border-4 border-transparent hover:border-[#7EBDC2] transition-all duration-500;
 	}
 	.media-card-text {
-		@apply font-maven   text-white truncate max-w-[16ch];
+		@apply font-maven text-white truncate max-w-[16ch];
 	}
 	.pg-button {
-		@apply font-rubik text-white text-xl bg-accent-colour p-1 my-8 w-12 rounded-lg;
+		@apply font-rubik text-white text-xl bg-[#201d1d] p-1 my-8 w-12 rounded-lg;
+	}
+	.pg-button-active {
+		@apply bg-accent-colour shadow-xl;
 	}
 	.mediaInfo-row {
 		@apply flex flex-row space-x-2;
@@ -33,16 +45,12 @@
 	.mediaInfo-rowText {
 		@apply font-k2d;
 	}
-	:root {
-		@apply bg-gradient-to-b from-[#242934] to-[#3B4E5C] min-h-screen;
-	}
 }
 
 .swiper {
 	width: 500px; /* keeps the card swipes within the carousel */
 	height: 100%;
 }
-
 .swiper-slide {
 	display: flex;
 	align-items: center;
@@ -52,7 +60,7 @@
 }
 
 .swiper-pagination-bullet {
-	background-color: #73a4a6;
+	@apply bg-accent-colour;
 	width: 10px;
 	height: 10px;
 }

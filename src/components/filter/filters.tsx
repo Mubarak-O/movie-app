@@ -60,15 +60,15 @@ export const Filters = ({ setFilters }: FilterProps) => {
 				placeholder="Search..."
 				className="search-box"
 			/>
-			<div className="flex flex-row filter-button">
+			<div className="filter-button">
 				<GenreButton onGenreSelect={handleSelectGenres} />
 				<FaCircleChevronDown />
 			</div>
-			<div className="flex flex-row filter-button">
+			<div className="filter-button">
 				<YearButton onYearSelect={handleSelectedYears} />
 				<FaCircleChevronDown />
 			</div>
-			<div className="flex flex-row filter-button">
+			<div className="filter-button">
 				<SortButton onSortingSelect={handleSelectSorting} />
 				<FaCircleChevronDown />
 			</div>

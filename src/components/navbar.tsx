@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { RiMovie2Line } from "react-icons/ri";
 import { UserAuth } from "../context/authContext";
 import { useEffect } from "react";
@@ -19,39 +19,25 @@ export const Navbar = () => {
 	};
 
 	return (
-		<div className="bg-secondary-colour/65 flex space-x-10 h-14 items-center px-8">
-			<Link className="grow" to="/">
+		<div className="navbar">
+			<NavLink className="mr-auto" to="/">
 				<RiMovie2Line className="fill-white" size={45} />
-			</Link>
-			<Link className="text-2xl text-white font-k2d" to="/movies">
+			</NavLink>
+			<NavLink to="/movies" end>
 				Movies
-			</Link>
-			<Link className="text-2xl text-white font-k2d" to="/tv-shows">
+			</NavLink>
+			<NavLink to="/tv-shows" end>
 				TV Shows
-			</Link>
+			</NavLink>
 			{user?.email ? (
 				<>
-					<Link
-						className="text-2xl text-white font-k2d"
-						to="/account"
-					>
-						Account
-					</Link>
-					<button
-						className="text-2xl text-white font-k2d"
-						onClick={handleLogout}
-					>
-						Log Out
-					</button>
+					<NavLink to="/account">Account</NavLink>
+					<button onClick={handleLogout}>Log Out</button>
 				</>
 			) : (
 				<>
-					<Link className="text-2xl text-white font-k2d" to="/signup">
-						Sign Up
-					</Link>
-					<Link className="text-2xl text-white font-k2d" to="/login">
-						Log In
-					</Link>
+					<NavLink to="/signup">Sign Up</NavLink>
+					<NavLink to="/login">Log In</NavLink>
 				</>
 			)}
 		</div>

@@ -27,7 +27,7 @@ export const YearButton = ({ onYearSelect }: YearButtonProps) => {
 						<Transition show={open}>
 							<Listbox.Options
 								static
-								className="absolute z-10 top-[15%] right-[41%] grid grid-cols-4 gap-2 mt-2 p-2 bg-slate-700 rounded-md shadow-lg"
+								className="absolute z-10 top-[15%] right-[41%] grid grid-cols-4 gap-2 mt-2 p-2 bg-[#201d1d] rounded-md shadow-lg"
 							>
 								{yearOptions.map((year) => (
 									<Listbox.Option

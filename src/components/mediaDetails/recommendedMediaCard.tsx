@@ -11,7 +11,7 @@ export const RecommendedMediaCard = ({ media }: { media: MediaData }) => {
 				src={`https://image.tmdb.org/t/p/w300/${media.poster_path}`}
 				alt={isMovie(media) ? media.title : media.original_name}
 			></img>
-			<div className="text-slate-400/90 font-maven font-semibold flex flex-row p-2 mx-10">
+			<div className="text-slate-300 font-maven font-semibold flex flex-row p-2 mx-10">
 				<p className="grow">
 					{isMovie(media)
 						? media.release_date.split("-")[0]

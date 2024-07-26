@@ -85,9 +85,6 @@ export const Media = ({ mediaType }: MediaProps) => {
 
 	return (
 		<>
-			<h1 className="font-k2d text-white text-3xl font-bold p-4">
-				{mediaType === "movie" ? "Movies" : "TV Shows"}
-			</h1>
 			<Filters setFilters={setFilters} />
 			<MediaCards mediaData={currentCards} />
 			<Pagination

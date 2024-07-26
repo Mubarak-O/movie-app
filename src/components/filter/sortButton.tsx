@@ -29,7 +29,7 @@ export const SortButton = ({ onSortingSelect }: SortButtonProps) => {
 						<Transition show={open}>
 							<Listbox.Options
 								static
-								className="flex flex-col space-y-1  absolute z-10 top-[15%] right-[20%] mt-2 p-4 bg-slate-700 rounded-md shadow-lg"
+								className="flex flex-col space-y-1  absolute z-10 top-[15%] right-[20%] mt-2 p-4 bg-[#201d1d] rounded-md shadow-lg"
 							>
 								{sortOptions.map((option) => (
 									<Listbox.Option

@@ -19,21 +19,17 @@ export const Pagination = ({
 
 	return (
 		<div className="flex flex-row justify-between max-w-[85%] mx-auto">
-			{pages.map((page, index) => {
-				return (
-					<button
-						key={index}
-						onClick={() => setCurrentPage(page)}
-						className={`pg-button ${
-							page === currentPage
-								? "bg-accent-colour/35 shadow-xl"
-								: ""
-						}`}
-					>
-						{page}
-					</button>
-				);
-			})}
+			{pages.map((page, index) => (
+				<button
+					key={index}
+					onClick={() => setCurrentPage(page)}
+					className={`pg-button ${
+						page === currentPage ? "pg-button-active" : ""
+					}`}
+				>
+					{page}
+				</button>
+			))}
 		</div>
 	);
 };

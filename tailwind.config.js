@@ -4,13 +4,15 @@ export default {
 	theme: {
 		extend: {
 			colors: {
-				"secondary-colour": "#05010D",
-				"accent-colour": "#73A4A6",
+				"primary-colour": "#131112",
+				"secondary-colour": "#242629",
+				"accent-colour": "#cd1c3c",
 			},
 			fontFamily: {
 				k2d: ["K2D", "sans-serif"],
 				maven: ["Maven Pro", "sans-serif"],
 				rubik: ["Rubik", "sans-serif"],
+				poppins: ["Poppins", "sans-serif"],
 			},
 		},
 	},
