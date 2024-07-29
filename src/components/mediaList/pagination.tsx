@@ -1,3 +1,10 @@
+import {
+	PiCaretLeftBold,
+	PiCaretDoubleLeftBold,
+	PiCaretRightBold,
+	PiCaretDoubleRightBold,
+} from "react-icons/pi";
+
 interface PaginationProps {
 	totalCards: number;
 	cardsPerPage: number;
@@ -11,25 +18,69 @@ export const Pagination = ({
 	setCurrentPage,
 	currentPage,
 }: PaginationProps) => {
-	let pages = [];
+	const totalPages: number = Math.ceil(totalCards / cardsPerPage);
+	const maxPageButtons = 5;
 
-	for (let i = 1; i <= Math.ceil(totalCards / cardsPerPage); i++) {
-		pages.push(i);
-	}
+	const getPageRange = () => {
+		let start = Math.max(1, currentPage - Math.floor(maxPageButtons / 2));
+		let end = Math.min(totalPages, start + maxPageButtons - 1);
+
+		if (end - start + 1 < maxPageButtons) {
+			start = Math.max(1, end - maxPageButtons + 1);
+		}
+
+		return Array.from({ length: end - start + 1 }, (_, i) => start + i);
+	};
+
+	const pageRange: number[] = getPageRange();
 
 	return (
-		<div className="flex flex-row justify-between max-w-[85%] mx-auto">
-			{pages.map((page, index) => (
+		<div className="pg-container">
+			{currentPage > 1 && (
+				<>
+					<button
+						onClick={() => setCurrentPage(1)}
+						className="pg-button-nav"
+						id="first"
+					>
+						<PiCaretDoubleLeftBold size={32} />
+					</button>
+					<button
+						onClick={() => setCurrentPage(currentPage - 1)}
+						className="pg-button-nav"
+					>
+						<PiCaretLeftBold size={35} />
+					</button>
+				</>
+			)}
+			{pageRange.map((page) => (
 				<button
-					key={index}
+					key={page}
 					onClick={() => setCurrentPage(page)}
-					className={`pg-button ${
+					className={`pg-button-num ${
 						page === currentPage ? "pg-button-active" : ""
 					}`}
 				>
 					{page}
 				</button>
 			))}
+			{currentPage < totalPages && (
+				<>
+					<button
+						onClick={() => setCurrentPage(currentPage + 1)}
+						className="pg-button-nav"
+					>
+						<PiCaretRightBold size={32} />
+					</button>
+					<button
+						onClick={() => setCurrentPage(totalPages)}
+						className="pg-button-nav"
+						id="last"
+					>
+						<PiCaretDoubleRightBold size={35} />
+					</button>
+				</>
+			)}
 		</div>
 	);
 };
