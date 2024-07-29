@@ -5,8 +5,8 @@ export default {
 		extend: {
 			colors: {
 				"primary-colour": "#131112",
-				"secondary-colour": "#242629",
-				"accent-colour": "#cd1c3c",
+				"secondary-colour": "#282828",
+				"accent-colour": "#A61731",
 			},
 			fontFamily: {
 				k2d: ["K2D", "sans-serif"],
