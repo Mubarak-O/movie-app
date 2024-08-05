@@ -1,6 +1,6 @@
 import { Dispatch, FormEvent, SetStateAction, useRef, useState } from "react";
 import { DataFilters } from "../../types/types";
-import { FaFilter, FaCircleChevronDown } from "react-icons/fa6";
+import { FaChevronDown } from "react-icons/fa6";
 import { GenreButton } from "./genreButton";
 import { SortButton } from "./sortButton";
 import { YearButton } from "./yearButtons";
@@ -49,31 +49,40 @@ export const Filters = ({ setFilters }: FilterProps) => {
 		});
 	};
 
+	const handleClearFilters = () => {
+		setSelectedGenre([]);
+		setselectedYear(undefined);
+		setSelectedSorting("");
+	};
+
 	return (
-		<form
-			className="flex flex-row mx-auto justify-between w-[80%] text-white text-xl font-k2d"
-			onSubmit={handleSubmit}
-		>
+		<form className="filters-container" onSubmit={handleSubmit}>
 			<input
 				type="text"
 				ref={inputValueRef}
 				placeholder="Search..."
 				className="search-box"
 			/>
-			<div className="filter-button">
+			<div className="filter-button w-44">
 				<GenreButton onGenreSelect={handleSelectGenres} />
-				<FaCircleChevronDown />
+				<FaChevronDown />
 			</div>
-			<div className="filter-button">
+			<div className="filter-button w-36">
 				<YearButton onYearSelect={handleSelectedYears} />
-				<FaCircleChevronDown />
+				<FaChevronDown />
 			</div>
-			<div className="filter-button">
+			<div className="filter-button w-44">
 				<SortButton onSortingSelect={handleSelectSorting} />
-				<FaCircleChevronDown />
+				<FaChevronDown />
 			</div>
-			<button className="filter-button bg-accent-colour">
-				<FaFilter className="" />
+			<button className="filter-button border-transparent bg-accent-colour">
+				Apply
+			</button>
+			<button
+				onClick={handleClearFilters}
+				className="filter-button border-transparent bg-accent-colour"
+			>
+				Clear
 			</button>
 		</form>
 	);

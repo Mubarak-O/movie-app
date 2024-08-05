@@ -10,6 +10,24 @@ interface GenreButtonProps {
 export const GenreButton = ({ onGenreSelect }: GenreButtonProps) => {
 	const [selectedGenres, setSelectedGenres] = useState<number[]>([]);
 
+	const displaySelectedInfo = (): string => {
+		const selectedGenresAmount = selectedGenres.length;
+		if (selectedGenresAmount < 1) {
+			return "Genre";
+		} else if (selectedGenresAmount === 1) {
+			const message = getGenreNameById(selectedGenres);
+			if (message) {
+				return message;
+			}
+		} else if (selectedGenresAmount <= 5) {
+			return `Genre (${selectedGenresAmount}) `;
+		} else {
+			return `Genre (5+)`;
+		}
+
+		return "message";
+	};
+
 	const handleGenreSelection = (selected: number[]) => {
 		console.log(selected);
 		setSelectedGenres(selected);
@@ -25,13 +43,7 @@ export const GenreButton = ({ onGenreSelect }: GenreButtonProps) => {
 			>
 				{({ open }) => (
 					<>
-						<Listbox.Button>
-							{selectedGenres.length < 1
-								? "Genre"
-								: selectedGenres.length === 1
-								? getGenreNameById(selectedGenres)
-								: `${selectedGenres.length} selected`}
-						</Listbox.Button>
+						<Listbox.Button>{displaySelectedInfo()}</Listbox.Button>
 						<Transition show={open}>
 							<Listbox.Options
 								static
