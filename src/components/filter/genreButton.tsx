@@ -1,21 +1,20 @@
-import { Fragment, useState } from "react";
+import { Fragment } from "react";
 import { Listbox, Transition } from "@headlessui/react";
 import { getGenreNameById } from "../../utils/utility";
 import { genresData } from "../../utils/utility";
 
 interface GenreButtonProps {
 	onGenreSelect: (selected: number[]) => void;
+	value: number[];
 }
 
-export const GenreButton = ({ onGenreSelect }: GenreButtonProps) => {
-	const [selectedGenres, setSelectedGenres] = useState<number[]>([]);
-
+export const GenreButton = ({ value, onGenreSelect }: GenreButtonProps) => {
 	const displaySelectedInfo = (): string => {
-		const selectedGenresAmount = selectedGenres.length;
+		const selectedGenresAmount = value.length;
 		if (selectedGenresAmount < 1) {
 			return "Genre";
 		} else if (selectedGenresAmount === 1) {
-			const message = getGenreNameById(selectedGenres);
+			const message = getGenreNameById(value);
 			if (message) {
 				return message;
 			}
@@ -28,27 +27,14 @@ export const GenreButton = ({ onGenreSelect }: GenreButtonProps) => {
 		return "message";
 	};
 
-	const handleGenreSelection = (selected: number[]) => {
-		console.log(selected);
-		setSelectedGenres(selected);
-		onGenreSelect(selected);
-	};
-
 	return (
 		<>
-			<Listbox
-				value={selectedGenres}
-				onChange={handleGenreSelection}
-				multiple
-			>
+			<Listbox value={value} onChange={onGenreSelect} multiple>
 				{({ open }) => (
 					<>
 						<Listbox.Button>{displaySelectedInfo()}</Listbox.Button>
 						<Transition show={open}>
-							<Listbox.Options
-								static
-								className="absolute z-10 top-[15%] right-[45%] grid grid-cols-4 gap-2 mt-2 p-2 bg-[#201d1d] rounded-md shadow-lg"
-							>
+							<Listbox.Options className="absolute z-10 top-[15%] right-[45%] grid grid-cols-4 gap-2 mt-2 p-2 bg-[#201d1d] rounded-md shadow-lg">
 								{genresData.genres.map((genre) => (
 									<Listbox.Option
 										key={genre.id}

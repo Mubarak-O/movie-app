@@ -50,6 +50,9 @@ export const Filters = ({ setFilters }: FilterProps) => {
 	};
 
 	const handleClearFilters = () => {
+		if (inputValueRef.current?.value.trim()) {
+			inputValueRef.current.value = "";
+		}
 		setSelectedGenre([]);
 		setselectedYear(undefined);
 		setSelectedSorting("");
@@ -64,7 +67,10 @@ export const Filters = ({ setFilters }: FilterProps) => {
 				className="search-box"
 			/>
 			<div className="filter-button w-44">
-				<GenreButton onGenreSelect={handleSelectGenres} />
+				<GenreButton
+					value={selectedGenre}
+					onGenreSelect={handleSelectGenres}
+				/>
 				<FaChevronDown />
 			</div>
 			<div className="filter-button w-36">
