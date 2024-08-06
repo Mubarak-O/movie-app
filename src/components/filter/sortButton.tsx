@@ -1,30 +1,20 @@
 import { Listbox, Transition } from "@headlessui/react";
-import { Fragment, useState } from "react";
+import { Fragment } from "react";
 import { sortOptions, getOptionNameById } from "../../utils/utility";
 
 interface SortButtonProps {
 	onSortingSelect: (selectedOption: string) => void;
+	value: string;
 }
 
-export const SortButton = ({ onSortingSelect }: SortButtonProps) => {
-	const [selectedOption, setSelectedOption] = useState<string>(
-		sortOptions[0].id
-	);
-
-	const handleSelectedOption = (selectedOption: string) => {
-		setSelectedOption(selectedOption);
-		onSortingSelect(selectedOption);
-	};
-
+export const SortButton = ({ value, onSortingSelect }: SortButtonProps) => {
 	return (
 		<>
-			<Listbox value={selectedOption} onChange={handleSelectedOption}>
+			<Listbox value={value} onChange={onSortingSelect}>
 				{({ open }) => (
 					<>
 						<Listbox.Button>
-							{selectedOption
-								? getOptionNameById(selectedOption)
-								: "Sort By"}
+							{getOptionNameById(value)}
 						</Listbox.Button>
 						<Transition show={open}>
 							<Listbox.Options

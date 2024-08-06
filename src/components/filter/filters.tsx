@@ -13,7 +13,7 @@ export const Filters = ({ setFilters }: FilterProps) => {
 	const inputValueRef = useRef<HTMLInputElement>(null);
 	const [selectedGenre, setSelectedGenre] = useState<number[]>([]); // number array e.g: [1,25,3]
 	const [selectedYear, setSelectedYear] = useState<string>("");
-	const [selectedSorting, setSelectedSorting] = useState<string>("");
+	const [selectedSorting, setSelectedSorting] = useState<string>("trending");
 
 	const handleSelectGenres = (selectedGenres: number[]) => {
 		setSelectedGenre(selectedGenres);
@@ -46,7 +46,7 @@ export const Filters = ({ setFilters }: FilterProps) => {
 		}
 		setSelectedGenre([]);
 		setSelectedYear("");
-		setSelectedSorting("");
+		setSelectedSorting("trending");
 	};
 
 	return (
@@ -72,7 +72,10 @@ export const Filters = ({ setFilters }: FilterProps) => {
 				<FaChevronDown />
 			</div>
 			<div className="filter-button w-44">
-				<SortButton onSortingSelect={handleSelectSorting} />
+				<SortButton
+					value={selectedSorting}
+					onSortingSelect={handleSelectSorting}
+				/>
 				<FaChevronDown />
 			</div>
 			<button className="filter-button border-transparent bg-accent-colour">
