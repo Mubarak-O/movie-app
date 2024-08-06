@@ -12,24 +12,15 @@ type FilterProps = {
 export const Filters = ({ setFilters }: FilterProps) => {
 	const inputValueRef = useRef<HTMLInputElement>(null);
 	const [selectedGenre, setSelectedGenre] = useState<number[]>([]); // number array e.g: [1,25,3]
-	const [selectedYear, setselectedYear] = useState<string[] | undefined>();
+	const [selectedYear, setSelectedYear] = useState<string>("");
 	const [selectedSorting, setSelectedSorting] = useState<string>("");
 
 	const handleSelectGenres = (selectedGenres: number[]) => {
 		setSelectedGenre(selectedGenres);
 	};
 
-	const handleSelectedYears = (selectedYears: string) => {
-		if (selectedYears.length < 5) {
-			const yearGte = `${selectedYears}-01-01`;
-			const yearLte = `${selectedYears}-12-31`;
-			setselectedYear([yearGte, yearLte]);
-		} else {
-			const years = selectedYears.split("-");
-			const yearGte = `${years[0]}-01-01`;
-			const yearLte = `${years[1]}-12-31`;
-			setselectedYear([yearGte, yearLte]);
-		}
+	const handleSelectedYears = (selectedYear: string) => {
+		setSelectedYear(selectedYear);
 	};
 
 	const handleSelectSorting = (selectedOption: string) => {
@@ -54,7 +45,7 @@ export const Filters = ({ setFilters }: FilterProps) => {
 			inputValueRef.current.value = "";
 		}
 		setSelectedGenre([]);
-		setselectedYear(undefined);
+		setSelectedYear("");
 		setSelectedSorting("");
 	};
 
@@ -74,7 +65,10 @@ export const Filters = ({ setFilters }: FilterProps) => {
 				<FaChevronDown />
 			</div>
 			<div className="filter-button w-36">
-				<YearButton onYearSelect={handleSelectedYears} />
+				<YearButton
+					value={selectedYear}
+					onYearSelect={handleSelectedYears}
+				/>
 				<FaChevronDown />
 			</div>
 			<div className="filter-button w-44">

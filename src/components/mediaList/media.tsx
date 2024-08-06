@@ -3,7 +3,7 @@ import { MediaCards } from "./mediaCards";
 import { Pagination } from "./pagination";
 import { useMediaData } from "../../api/hooks";
 import { DataFilters, MediaData } from "../../types/types";
-import { isMovie } from "../../utils/utility";
+import { getFilterDateRanges, isMovie } from "../../utils/utility";
 import { Filters } from "../filter/filters";
 
 interface MediaProps {
@@ -45,14 +45,17 @@ export const Media = ({ mediaType }: MediaProps) => {
 				return true; // if no genre is selected include all items
 			})
 			.filter((media) => {
-				if (filters.selectedYear?.length == 2) {
+				if (filters.selectedYear && filters.selectedYear?.length > 0) {
 					const date = isMovie(media)
 						? media.release_date
 						: media.first_air_date;
 					const releaseDate = new Date(date);
-					const startDate = new Date(filters.selectedYear[0]);
-					const endDate = new Date(filters.selectedYear[1]);
-					return releaseDate >= startDate && releaseDate <= endDate;
+					const [filterStartDate, filterEndDate] =
+						getFilterDateRanges(filters.selectedYear);
+					return (
+						releaseDate >= filterStartDate &&
+						releaseDate <= filterEndDate
+					);
 				}
 				return true; // if no year is selected, include all items
 			})

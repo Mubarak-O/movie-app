@@ -206,6 +206,22 @@ export const yearOptions = [
 	},
 ];
 
+export function getFilterDateRanges(year: string): Date[] {
+	let startDate: Date;
+	let endDate: Date;
+	if (year.length < 5) {
+		// We only have one year selected, i.e. 2024, 2023, etc...
+		startDate = new Date(`${year}-01-01`);
+		endDate = new Date(`${year}-12-31`);
+	} else {
+		// We have a range of years selected, i.e. 1990s -> [1990 - 1999]
+		const years = year.split("-");
+		startDate = new Date(`${years[0]}-01-01`);
+		endDate = new Date(`${years[1]}-12-31`);
+	}
+	return [startDate, endDate];
+}
+
 export function getYearNameById(id: string): string | undefined {
 	const year = yearOptions.find((option) => option.id === id);
 	return year ? year.year : undefined;

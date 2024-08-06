@@ -105,6 +105,6 @@ export type dbMedia = {
 export type DataFilters = {
 	searchQuery: string;
 	selectedGenre?: number[];
-	selectedYear?: string[];
+	selectedYear?: string;
 	selectedSorting?: string;
 };

@@ -1,28 +1,20 @@
-import { Fragment, useState } from "react";
+import { Fragment } from "react";
 import { Listbox, Transition } from "@headlessui/react";
 import { yearOptions, getYearNameById } from "../../utils/utility";
 
 interface YearButtonProps {
 	onYearSelect: (selected: string) => void;
+	value: string;
 }
 
-export const YearButton = ({ onYearSelect }: YearButtonProps) => {
-	const [selectedYears, setSelectedYears] = useState<string | null>("");
-
-	const handleYearSelection = (selected: string) => {
-		setSelectedYears(selected);
-		onYearSelect(selected);
-	};
-
+export const YearButton = ({ value, onYearSelect }: YearButtonProps) => {
 	return (
 		<>
-			<Listbox value={selectedYears} onChange={handleYearSelection}>
+			<Listbox value={value} onChange={onYearSelect}>
 				{({ open }) => (
 					<>
 						<Listbox.Button>
-							{selectedYears
-								? getYearNameById(selectedYears)
-								: "Year"}
+							{value ? getYearNameById(value) : "Year"}
 						</Listbox.Button>
 						<Transition show={open}>
 							<Listbox.Options
