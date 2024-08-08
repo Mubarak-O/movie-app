@@ -89,21 +89,21 @@ export const Filters = ({ setFilters }: FilterProps) => {
 				className="search-box"
 				onChange={() => setDisabled(false)}
 			/>
-			<div className="filter-button w-44">
+			<div className="filter-button w-44 relative">
 				<GenreButton
 					value={selectedGenre}
 					onGenreSelect={handleSelectGenres}
 				/>
 				<FaChevronDown />
 			</div>
-			<div className="filter-button w-36">
+			<div className="filter-button w-36 relative">
 				<YearButton
 					value={selectedYear}
 					onYearSelect={handleSelectedYears}
 				/>
 				<FaChevronDown />
 			</div>
-			<div className="filter-button w-44">
+			<div className="filter-button w-44 relative">
 				<SortButton
 					value={selectedSorting}
 					onSortingSelect={handleSelectSorting}

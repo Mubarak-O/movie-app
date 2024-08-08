@@ -16,10 +16,18 @@ export const SortButton = ({ value, onSortingSelect }: SortButtonProps) => {
 						<Listbox.Button>
 							{getOptionNameById(value)}
 						</Listbox.Button>
-						<Transition show={open}>
+						<Transition
+							show={open}
+							enter="transition duration-150 ease-in"
+							enterFrom="opacity-0"
+							enterTo="opacity-100"
+							leave="transition duration-150 ease-out"
+							leaveFrom="opacity-100"
+							leaveTo="opacity-0"
+						>
 							<Listbox.Options
+								className="flex-col space-y-2 w-full absolute top-12 right-0 p-4 bg-[#201d1d] rounded-md shadow-lg"
 								static
-								className="flex flex-col space-y-1  absolute z-10 top-[15%] right-[20%] mt-2 p-4 bg-[#201d1d] rounded-md shadow-lg"
 							>
 								{sortOptions.map((option) => (
 									<Listbox.Option
@@ -31,9 +39,9 @@ export const SortButton = ({ value, onSortingSelect }: SortButtonProps) => {
 											<li
 												className={`${
 													selected || active
-														? "bg-accent-colour rounded-md text-white"
+														? "bg-accent-colour/85 rounded-md"
 														: "text-white"
-												}  cursor-pointer select-none p-2`}
+												}  cursor-pointer select-none p-1.5 flex justify-center`}
 											>
 												{option.name}
 											</li>

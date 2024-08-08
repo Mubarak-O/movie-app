@@ -26,10 +26,18 @@
 		@apply bg-secondary-colour rounded-lg px-8 py-2 max-w-[30rem] grow;
 	}
 	.filter-button {
-		@apply bg-transparent border-2 border-white rounded-md px-6 py-2 flex flex-row items-center;
+		@apply bg-transparent border-2 border-white rounded-md px-6 py-2 flex flex-row items-center hover:bg-accent-colour/10;
 	}
 	.filter-button > :last-child {
 		@apply ml-auto;
+	}
+	.filter-button:hover,
+	.filter-button:focus {
+		@apply border-accent-colour border-2 ease-in-out duration-300;
+	}
+	.filter-button:hover > svg,
+	.filter-button:focus > svg {
+		@apply text-accent-colour ease-in-out duration-300;
 	}
 	.media-card-poster {
 		@apply rounded-2xl border-4 border-transparent;

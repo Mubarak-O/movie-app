@@ -33,8 +33,19 @@ export const GenreButton = ({ value, onGenreSelect }: GenreButtonProps) => {
 				{({ open }) => (
 					<>
 						<Listbox.Button>{displaySelectedInfo()}</Listbox.Button>
-						<Transition show={open}>
-							<Listbox.Options className="absolute z-10 top-[15%] right-[45%] grid grid-cols-4 gap-2 mt-2 p-2 bg-[#201d1d] rounded-md shadow-lg">
+						<Transition
+							show={open}
+							enter="transition duration-150 ease-in"
+							enterFrom="opacity-0"
+							enterTo="opacity-100"
+							leave="transition duration-150 ease-out"
+							leaveFrom="opacity-100"
+							leaveTo="opacity-0"
+						>
+							<Listbox.Options
+								className="absolute grid grid-cols-3 gap-2 top-12 -left-36 w-max p-4 bg-[#201d1d] rounded-md shadow-lg"
+								static
+							>
 								{genresData.genres.map((genre) => (
 									<Listbox.Option
 										key={genre.id}
@@ -45,9 +56,9 @@ export const GenreButton = ({ value, onGenreSelect }: GenreButtonProps) => {
 											<li
 												className={`${
 													selected || active
-														? "bg-accent-colour rounded-md text-white"
+														? "bg-accent-colour/85 rounded-md text-white"
 														: "text-white"
-												}  cursor-pointer select-none p-2`}
+												}  cursor-pointer select-none p-1.5 flex justify-center`}
 											>
 												{genre.name}
 											</li>

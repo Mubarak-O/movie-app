@@ -16,10 +16,18 @@ export const YearButton = ({ value, onYearSelect }: YearButtonProps) => {
 						<Listbox.Button>
 							{value ? getYearNameById(value) : "Year"}
 						</Listbox.Button>
-						<Transition show={open}>
+						<Transition
+							show={open}
+							enter="transition duration-150 ease-in"
+							enterFrom="opacity-0"
+							enterTo="opacity-100"
+							leave="transition duration-150 ease-out"
+							leaveFrom="opacity-100"
+							leaveTo="opacity-0"
+						>
 							<Listbox.Options
+								className="absolute z-10 top-12 -left-28 w-max grid grid-cols-4 gap-2 p-4 bg-[#201d1d] rounded-md shadow-lg"
 								static
-								className="absolute z-10 top-[15%] right-[41%] grid grid-cols-4 gap-2 mt-2 p-2 bg-[#201d1d] rounded-md shadow-lg"
 							>
 								{yearOptions.map((year) => (
 									<Listbox.Option
@@ -31,9 +39,9 @@ export const YearButton = ({ value, onYearSelect }: YearButtonProps) => {
 											<li
 												className={`${
 													selected || active
-														? "bg-accent-colour rounded-md text-white"
+														? "bg-accent-colour/85 rounded-md"
 														: "text-white"
-												}  cursor-pointer select-none p-2`}
+												}  cursor-pointer select-none p-1.5 flex justify-center`}
 											>
 												{year.year}
 											</li>
