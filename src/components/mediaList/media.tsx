@@ -6,6 +6,9 @@ import { DataFilters, MediaData } from "../../types/types";
 import { getFilterDateRanges, isMovie } from "../../utils/utility";
 import { Filters } from "../filter/filters";
 
+import { ring2 } from "ldrs";
+ring2.register();
+
 interface MediaProps {
 	mediaType: "movie" | "tv";
 }
@@ -77,7 +80,18 @@ export const Media = ({ mediaType }: MediaProps) => {
 	}, [mediaData, filters]);
 
 	if (isLoading) {
-		return <p>Loading Content...</p>;
+		return (
+			<div className="flex justify-center items-center h-[40rem]">
+				<l-ring-2
+					size="100"
+					stroke="5"
+					stroke-length="0.25"
+					bg-opacity="0.1"
+					speed="1"
+					color="#A61731"
+				></l-ring-2>
+			</div>
+		);
 	} else if (error) {
 		return <p>Run into Error: {error.message}</p>;
 	}
