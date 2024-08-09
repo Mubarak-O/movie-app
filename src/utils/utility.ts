@@ -254,7 +254,7 @@ function filterDuplicateData(mediaData: MediaData[]): MediaData[] {
 }
 
 function filterLowQualityData(mediaData: MediaData[]): MediaData[] {
-	const voteThreshold: number = 50;
+	const voteThreshold: number = 250;
 	return mediaData.filter((media) => {
 		return media.vote_count > voteThreshold; // Filter out the low quality media options
 	});

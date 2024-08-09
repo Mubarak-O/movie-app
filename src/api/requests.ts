@@ -29,7 +29,7 @@ async function accumulateMediaData(
 ): Promise<MediaData[] | []> {
 	let accumulatedMediaData: MediaData[] = [];
 
-	for (let page = 1; page <= 10; page++) {
+	for (let page = 1; page <= 50; page++) {
 		try {
 			options.params.page = page.toString();
 
