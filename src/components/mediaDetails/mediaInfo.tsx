@@ -22,9 +22,7 @@ export const MediaInfo = ({ id, mediaType }: MediaInfoProps) => {
 	const [mediaData, setMediaData] = useState<DetailedMediaData>(
 		{} as DetailedMediaData
 	);
-	const title = isMovie(mediaData)
-		? mediaData.title
-		: mediaData.original_name;
+	const title = isMovie(mediaData) ? mediaData.title : mediaData.name;
 
 	const [liked, setLiked] = useState<boolean>(false);
 	const [watchLater, setWatchLater] = useState<boolean>(false);

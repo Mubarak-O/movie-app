@@ -4,12 +4,14 @@ import { isMovie } from "../../utils/utility";
 import { FaPlay } from "react-icons/fa6";
 
 export const RecommendedMediaCard = ({ media }: { media: MediaData }) => {
+	const title = isMovie(media) ? media.title : media.name;
+
 	return (
 		<div className="bg-secondary-colour rounded-2xl space-y-3 pb-4">
 			<img
 				className=" rounded-t-2xl "
 				src={`https://image.tmdb.org/t/p/w300/${media.poster_path}`}
-				alt={isMovie(media) ? media.title : media.original_name}
+				alt={title}
 			></img>
 			<div className="text-slate-300 font-maven font-semibold flex flex-row p-2 mx-10">
 				<p className="grow">
@@ -20,11 +22,7 @@ export const RecommendedMediaCard = ({ media }: { media: MediaData }) => {
 				<p>{isMovie(media) ? "Movie" : "TV-Show"}</p>
 			</div>
 			<div className="text-white text-2xl font-medium font-rubik flex justify-center pb-4">
-				<p className="truncate max-w-[15ch]">
-					{isMovie(media)
-						? media.original_title
-						: media.original_name}
-				</p>
+				<p className="truncate max-w-[15ch]">{title}</p>
 			</div>
 			<Link to={`../${media.id}`} reloadDocument>
 				<button className="text-white flex flex-row mx-auto items-center justify-center space-x-6 bg-accent-colour rounded-md p-1 w-[85%]">
