@@ -46,6 +46,10 @@ This is a WIP Movie Web Application built using React, TypeScript, Vite and TheM
 
     -   A powerful data synchronization library for managing, caching and optimizing data fetched via API requests.
 
+-   **[LDRS](https://uiball.com/ldrs/)**
+
+    -   A lightweight, customizable library for adding high-quality loading animations to web applications, offering a variety of SVG-based loaders with minimal overhead.
+
 ## APIs Used
 
 -   [TheMovieDB API](https://developer.themoviedb.org/docs/getting-started)
