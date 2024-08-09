@@ -81,7 +81,11 @@ export const Media = ({ mediaType }: MediaProps) => {
 
 	if (isLoading) {
 		return (
-			<div className="flex justify-center items-center h-[40rem]">
+			<div
+				aria-live="polite"
+				aria-busy={isLoading}
+				className="flex justify-center items-center h-[40rem]"
+			>
 				<l-ring-2
 					size="100"
 					stroke="5"
