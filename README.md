@@ -55,6 +55,11 @@ This is a WIP Movie Web Application built using React, TypeScript, Vite and TheM
 -   [TheMovieDB API](https://developer.themoviedb.org/docs/getting-started)
     -   A comprehensive database and API service for accessing Movie and TV Show data. It provides extensive information about films and tv series including details like: titles, genres, release dates, cast and crew, ratings and much more. The API is also used to fetch content such as trending movies and tv shows, search results and recommendations based on user preferences.
 
+## Changelog
+
+For before and after compraisons of the changes, please see our
+[Comparison Document](docs/ui-snapshots//COMPARISON.md)
+
 ## TODO:
 
 -   ### ~~User Authentication~~
