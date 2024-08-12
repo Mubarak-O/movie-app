@@ -107,7 +107,7 @@
 }
 
 #slider::-webkit-scrollbar-thumb {
-	background-color: #73a4a6;
+	@apply bg-accent-colour;
 	border-radius: 10px;
 }
 
