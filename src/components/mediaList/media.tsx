@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { MediaCards } from "./mediaCards";
 import { Pagination } from "./pagination";
 import { useMediaData } from "../../api/hooks";
@@ -25,6 +25,10 @@ export const Media = ({ mediaType }: MediaProps) => {
 		selectedYear: undefined,
 		selectedSorting: undefined,
 	});
+
+	useEffect(() => {
+		setCurrentPage(1); // When filters are applied the page number is reset to 1
+	}, [filters]);
 
 	const { data: mediaData = [], isLoading, error } = useMediaData(mediaType);
 
