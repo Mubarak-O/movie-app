@@ -14,9 +14,10 @@ import { YearButton } from "./yearButtons";
 
 type FilterProps = {
 	setFilters: Dispatch<SetStateAction<DataFilters>>;
+	mediaType: "movie" | "tv";
 };
 
-export const Filters = ({ setFilters }: FilterProps) => {
+export const Filters = ({ setFilters, mediaType }: FilterProps) => {
 	const inputValueRef = useRef<HTMLInputElement>(null);
 	const [selectedGenre, setSelectedGenre] = useState<number[]>([]); // number array e.g: [1,25,3]
 	const [selectedYear, setSelectedYear] = useState<string>("");
@@ -89,8 +90,9 @@ export const Filters = ({ setFilters }: FilterProps) => {
 				className="search-box"
 				onChange={() => setDisabled(false)}
 			/>
-			<div className="filter-button w-44 relative">
+			<div className="filter-button w-48 relative">
 				<GenreButton
+					mediaType={mediaType}
 					value={selectedGenre}
 					onGenreSelect={handleSelectGenres}
 				/>

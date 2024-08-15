@@ -106,7 +106,7 @@ export const Media = ({ mediaType }: MediaProps) => {
 
 	return (
 		<>
-			<Filters setFilters={setFilters} />
+			<Filters setFilters={setFilters} mediaType={mediaType} />
 			<MediaCards mediaData={currentCards} />
 			<Pagination
 				totalCards={filteredData.length}

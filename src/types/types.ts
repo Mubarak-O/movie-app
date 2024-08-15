@@ -4,7 +4,8 @@ type Genre = {
 };
 
 export type GenresData = {
-	genres: Genre[];
+	movie: Genre[];
+	tv: Genre[];
 };
 
 type Person = {

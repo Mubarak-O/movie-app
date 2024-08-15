@@ -1,20 +1,24 @@
 import { Fragment } from "react";
 import { Listbox, Transition } from "@headlessui/react";
-import { getGenreNameById } from "../../utils/utility";
-import { genresData } from "../../utils/utility";
+import { getGenreNameById, genres } from "../../utils/utility";
 
 interface GenreButtonProps {
 	onGenreSelect: (selected: number[]) => void;
 	value: number[];
+	mediaType: "movie" | "tv";
 }
 
-export const GenreButton = ({ value, onGenreSelect }: GenreButtonProps) => {
+export const GenreButton = ({
+	onGenreSelect,
+	value,
+	mediaType,
+}: GenreButtonProps) => {
 	const displaySelectedInfo = (): string => {
 		const selectedGenresAmount = value.length;
 		if (selectedGenresAmount < 1) {
 			return "Genre";
 		} else if (selectedGenresAmount === 1) {
-			const message = getGenreNameById(value);
+			const message = getGenreNameById(value, mediaType);
 			if (message) {
 				return message;
 			}
@@ -27,12 +31,16 @@ export const GenreButton = ({ value, onGenreSelect }: GenreButtonProps) => {
 		return "message";
 	};
 
+	const genresData = mediaType === "movie" ? genres.movie : genres.tv;
+
 	return (
 		<>
 			<Listbox value={value} onChange={onGenreSelect} multiple>
 				{({ open }) => (
 					<>
-						<Listbox.Button>{displaySelectedInfo()}</Listbox.Button>
+						<Listbox.Button className="truncate">
+							{displaySelectedInfo()}
+						</Listbox.Button>
 						<Transition
 							show={open}
 							enter="transition duration-150 ease-in"
@@ -46,7 +54,7 @@ export const GenreButton = ({ value, onGenreSelect }: GenreButtonProps) => {
 								className="absolute grid grid-cols-3 gap-2 top-12 -left-36 w-max p-4 bg-[#201d1d] rounded-md shadow-lg"
 								static
 							>
-								{genresData.genres.map((genre) => (
+								{genresData.map((genre) => (
 									<Listbox.Option
 										key={genre.id}
 										value={genre.id}

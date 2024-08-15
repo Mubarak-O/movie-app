@@ -11,7 +11,7 @@ interface CarouselCardProps {
 
 export const CarouselCard = ({ movie }: CarouselCardProps) => {
 	const genres = movie?.genre_ids
-		.map((genre_id) => getGenreNameById(genre_id))
+		.map((genre_id) => getGenreNameById(genre_id, "movie"))
 		.slice(0, 3);
 
 	const release_year = movie?.release_date.split("-")[0];

@@ -1,7 +1,7 @@
 import { MediaData, Movie, GenresData, Crew, Cast } from "../types/types";
 
-export const genresData: GenresData = {
-	genres: [
+export const genres: GenresData = {
+	movie: [
 		{
 			id: 28,
 			name: "Action",
@@ -79,6 +79,72 @@ export const genresData: GenresData = {
 			name: "Western",
 		},
 	],
+	tv: [
+		{
+			id: 10759,
+			name: "Action & Adventure",
+		},
+		{
+			id: 16,
+			name: "Animation",
+		},
+		{
+			id: 35,
+			name: "Comedy",
+		},
+		{
+			id: 80,
+			name: "Crime",
+		},
+		{
+			id: 99,
+			name: "Documentary",
+		},
+		{
+			id: 18,
+			name: "Drama",
+		},
+		{
+			id: 10751,
+			name: "Family",
+		},
+		{
+			id: 10762,
+			name: "Kids",
+		},
+		{
+			id: 9648,
+			name: "Mystery",
+		},
+		{
+			id: 10763,
+			name: "News",
+		},
+		{
+			id: 10764,
+			name: "Reality",
+		},
+		{
+			id: 10765,
+			name: "Sci-Fi & Fantasy",
+		},
+		{
+			id: 10766,
+			name: "Soap",
+		},
+		{
+			id: 10767,
+			name: "Talk",
+		},
+		{
+			id: 10768,
+			name: "War & Politics",
+		},
+		{
+			id: 37,
+			name: "Western",
+		},
+	],
 };
 
 export function isMovie(data: MediaData): data is Movie {
@@ -96,17 +162,17 @@ export function getCast(castMembers: Cast[]): string[] {
 }
 
 export function getGenreNameById(
-	genreId: number | number[]
+	genreId: number | number[],
+	mediaType: "movie" | "tv"
 ): string | undefined {
+	const genresData = mediaType === "movie" ? genres.movie : genres.tv;
 	if (typeof genreId === "number") {
-		const genre = genresData.genres.find((genre) => genre.id == genreId);
+		const genre = genresData.find((genre) => genre.id == genreId);
 		return genre ? genre.name : undefined;
 	}
 
 	if (Array.isArray(genreId)) {
-		const genre = genresData.genres.find(
-			(genre) => genre.id === genreId[0]
-		);
+		const genre = genresData.find((genre) => genre.id === genreId[0]);
 		return genre ? genre.name : undefined;
 	}
 
