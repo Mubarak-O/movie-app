@@ -1,16 +1,15 @@
 import toast from "react-hot-toast";
 import { dbMedia } from "../../types/types";
-import { RowItem } from "./rowItem";
+import { GridItem } from "./gridItem";
 import { DocumentData, DocumentReference, updateDoc } from "firebase/firestore";
 
-interface RowProps {
-	title: string;
+interface GridProps {
 	media: dbMedia[];
 	userRefDoc: DocumentReference<DocumentData, DocumentData>;
 	type: "saved" | "bookmarked";
 }
 
-export const Row = ({ title, media, userRefDoc, type }: RowProps) => {
+export const Grid = ({ media, userRefDoc, type }: GridProps) => {
 	const removeMedia = async (passedId: number) => {
 		try {
 			const mediaToRemove = media.find((item) => item.id === passedId);
@@ -48,29 +47,19 @@ export const Row = ({ title, media, userRefDoc, type }: RowProps) => {
 	};
 
 	return (
-		<div className="mx-auto max-w-[75%] space-y-4 my-10">
-			<h1 className="text-2xl text-white font-bold font-rubik">
-				{title}
-			</h1>
+		<div className="flex flex-col items-center mb-10">
 			{media.length > 0 ? (
-				<div className="relative flex items-center">
-					<div
-						id="slider"
-						className="w-full h-full overflow-x-scroll whitespace-nowrap scroll-smooth bg-black/60 rounded-md space-x-2"
-						aria-label="Scrollable content with movie posters and their respective titles"
-						tabIndex={0}
-					>
-						{media.map((item, index) => (
-							<RowItem
-								key={index}
-								media={item}
-								handleRemoveMedia={removeMedia}
-							/>
-						))}
-					</div>
+				<div className="p-8 rounded-xl bg-neutral-950/85 grid grid-cols-4 gap-12 max-w-fit">
+					{media.map((item, index) => (
+						<GridItem
+							key={index}
+							media={item}
+							handleRemoveMedia={removeMedia}
+						/>
+					))}
 				</div>
 			) : (
-				<p className="font-maven text-white">No shows added yet!</p>
+				<p className="font-maven text-white">No media added yet!</p>
 			)}
 		</div>
 	);
