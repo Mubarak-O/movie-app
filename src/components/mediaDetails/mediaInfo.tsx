@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { DetailedMediaData, dbMedia } from "../../types/types";
 import { getMediaDetails } from "../../api/requests";
 import { isMovie, getDirector, getCast } from "../../utils/utility";
@@ -87,6 +87,30 @@ export const MediaInfo = ({ id, mediaType }: MediaInfoProps) => {
 		}
 	};
 
+	const removeLikedMedia = async () => {
+		if (user?.email && liked) {
+			setLiked(!liked);
+			try {
+				const docRef = await getDoc(docId);
+				const docData: dbMedia[] = docRef.data()?.savedMedia;
+				const result = docData.filter((item) => item.id !== +id);
+				await updateDoc(docId, {
+					savedMedia: result,
+				});
+				toast.success(
+					<p>
+						Removed <b>{title}</b> from your <i>favourites</i> list!
+					</p>,
+					{
+						icon: "🗑️",
+					}
+				);
+			} catch (error) {
+				console.log(error);
+			}
+		}
+	};
+
 	const bookmarkMedia = async () => {
 		if (user?.email) {
 			setWatchLater(!watchLater);
@@ -112,30 +136,6 @@ export const MediaInfo = ({ id, mediaType }: MediaInfoProps) => {
 					isMovie(mediaData) ? "Movie" : "Tv Show"
 				}`
 			);
-		}
-	};
-
-	const removeLikedMedia = async () => {
-		if (user?.email && liked) {
-			setLiked(!liked);
-			try {
-				const docRef = await getDoc(docId);
-				const docData: dbMedia[] = docRef.data()?.savedMedia;
-				const result = docData.filter((item) => item.id !== +id);
-				await updateDoc(docId, {
-					savedMedia: result,
-				});
-				toast.success(
-					<p>
-						Removed <b>{title}</b> from your <i>favourites</i> list!
-					</p>,
-					{
-						icon: "🗑️",
-					}
-				);
-			} catch (error) {
-				console.log(error);
-			}
 		}
 	};
 
@@ -166,17 +166,17 @@ export const MediaInfo = ({ id, mediaType }: MediaInfoProps) => {
 
 	return (
 		<div className="bg-secondary-colour flex flex-row rounded-[35px] space-x-10">
-			<div className="relative">
+			<div className="w-[25%] shrink-0">
 				<img
-					className="h-full rounded-l-[35px]"
-					src={`https://image.tmdb.org/t/p/w300/${mediaData.poster_path}`}
+					className="w-full h-auto object-cover rounded-l-[35px]"
+					src={`https://image.tmdb.org/t/p/w342/${mediaData.poster_path}`}
 					alt={title}
 				></img>
 			</div>
-			<div className="w-[70%] p-2 text-white space-y-10">
-				<div className="flex flex-col space-y-4 pt-2">
-					<div className="flex flex-row mr-20 items-center">
-						<h1 className="text-3xl font-k2d capitalize grow">
+			<div className="flex-1 flex-col px-10 text-white space-y-10">
+				<div className="flex flex-col space-y-2 my-10">
+					<div className="flex flex-row items-center">
+						<h1 className="text-5xl font-k2d capitalize grow">
 							{title}
 						</h1>
 						<span>
@@ -210,9 +210,11 @@ export const MediaInfo = ({ id, mediaType }: MediaInfoProps) => {
 							)}
 						</span>
 					</div>
-					<p className="font-maven text-lg">{mediaData.overview}</p>
+					<p className="font-maven text-lg line-clamp-3">
+						{mediaData.overview}
+					</p>
 				</div>
-				<div className="grid grid-cols-2 gap-y-5">
+				<div className="grid grid-cols-2 gap-y-4 border-2 border-green-300">
 					<div className="mediaInfo-row items-center">
 						<h2 className="mediaInfo-rowTitle">Release Date:</h2>
 						<p className="mediaInfo-rowText">
@@ -233,23 +235,17 @@ export const MediaInfo = ({ id, mediaType }: MediaInfoProps) => {
 							{mediaData.production_countries?.[0]?.name}
 						</p>
 					</div>
-					<div className="mediaInfo-row">
-						<h2 className="mediaInfo-rowTitle">Cast:</h2>
-						<p className="mediaInfo-rowText space-x-3">
-							{getCast(mediaData.credits?.cast).map(
-								(name, index) => (
-									<span key={index}>{name}</span>
-								)
-							)}
-						</p>
-					</div>
 					<div className="mediaInfo-row items-center">
 						<h2 className="mediaInfo-rowTitle">Genre:</h2>
-						<p className="mediaInfo-rowText space-x-3">
+						<p className="mediaInfo-rowText space-x-2">
 							{mediaData.genres
 								?.slice(0, 3)
 								.map((genre, index) => (
-									<span key={index}>{genre.name}</span>
+									<Fragment key={index}>
+										<span>{genre.name}</span>
+										{index < mediaData.genres.length - 1 &&
+											", "}
+									</Fragment>
 								))}
 						</p>
 					</div>
@@ -261,6 +257,22 @@ export const MediaInfo = ({ id, mediaType }: MediaInfoProps) => {
 							</p>
 						</div>
 					)}
+					<div className="mediaInfo-row col-span-2 mt-4">
+						<h2 className="mediaInfo-rowTitle">Cast:</h2>
+						<p className="mediaInfo-rowText space-x-2">
+							{getCast(mediaData.credits?.cast).map(
+								(name, index) => (
+									<Fragment key={index}>
+										<span>{name}</span>
+										{index <
+											getCast(mediaData.credits?.cast)
+												.length -
+												1 && ", "}
+									</Fragment>
+								)
+							)}
+						</p>
+					</div>
 				</div>
 			</div>
 		</div>
