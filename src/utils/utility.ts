@@ -157,7 +157,7 @@ export function getDirector(crewMembers: Crew[]): string {
 }
 
 export function getCast(castMembers: Cast[]): string[] {
-	const cast = castMembers?.slice(0, 10)?.map((cast) => cast.name);
+	const cast = castMembers?.slice(0, 7)?.map((cast) => cast.name);
 	return cast ? cast : ["N/A"];
 }
 

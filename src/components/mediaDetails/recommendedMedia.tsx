@@ -22,14 +22,14 @@ export const RecommendedMedia = ({
 
 	return (
 		recommendedMedia.length > 1 && (
-			<>
-				<h1 className="font-rubik text-white text-2xl">Recommended </h1>
-				<div className="flex flex-row justify-between pb-4">
+			<div className="grid grid-cols-1 gap-4">
+				<h1 className="font-rubik text-white text-4xl">Recommended </h1>
+				<div className="flex flex-row justify-between">
 					{recommendedMedia.map((media, index) => (
 						<RecommendedMediaCard key={index} media={media} />
 					))}
 				</div>
-			</>
+			</div>
 		)
 	);
 };

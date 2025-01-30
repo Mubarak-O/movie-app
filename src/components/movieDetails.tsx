@@ -7,7 +7,7 @@ export const MovieDetails = () => {
 	const { movieId } = useParams() as { movieId: string };
 
 	return (
-		<div className="mt-4 flex flex-col space-y-12 w-[75%] mx-auto">
+		<div className="grid grid-cols-1 gap-y-20 w-[1400px] mx-auto my-10">
 			<MediaPlayer />
 			<MediaInfo id={movieId} mediaType={"movie"} />
 			<RecommendedMedia id={movieId} mediaType={"movie"} />
